@@ -161,7 +161,7 @@ def create_todo(username):
 
     users[username]['todos'].append(new_todo)
 
-    return new_todo, 200
+    return new_todo, 201
 
 app.run(port=8080)
 
