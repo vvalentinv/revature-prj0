@@ -1,8 +1,10 @@
 import server_reloader
 from flask import Flask, request
+from controllers.client_controller import cc
 
 app = Flask(__name__)
 
+app.register_blueprint(cc)
 
 users = {
     "bachy21": {
@@ -163,7 +165,7 @@ def create_todo(username):
 
     return new_todo, 201
 
-app.run(port=8080)
+app.run(port=8080, debug=True)
 
 
 
