@@ -44,4 +44,3 @@ def get_customer_by_id(customer_id):
         return {
             "message": str(e)
         }, 404
-    
