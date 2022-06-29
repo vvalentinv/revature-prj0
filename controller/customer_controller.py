@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from model.customer import Customer
 from service.customer_service import CustomerService
+from exception.customer_not_found import CustomerNotFoundError
 
 cc = Blueprint('customer_controller', __name__)
 customer_service = CustomerService()
@@ -33,3 +34,14 @@ def get_all_customers():
     return {
         "users": customer_service.get_all_customers()  # a list of dictionaries
     }
+
+
+@cc.route('/api/customers/<customer_id>')  # GET /api/customers/<customer_id>
+def get_customer_by_id(customer_id):
+    try:
+        return customer_service.get_customer_by_id(customer_id)  # dictionary
+    except CustomerNotFoundError as e:
+        return {
+            "message": str(e)
+        }, 404
+    
