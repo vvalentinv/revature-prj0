@@ -5,9 +5,27 @@ from service.customer_service import CustomerService
 cc = Blueprint('customer_controller', __name__)
 customer_service = CustomerService()
 
+
 @cc.route('/')
 def index():
-    return "This is an example app"
+    endpoints_description = "How to use this API" + "\r\n" + "\r\n" + \
+        "'POST '/customers`: Creates a new customer" + "\r\n" + \
+        "`GET /customers`: Gets all customers" + "\r\n" +\
+        "`GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)" + "\r\n" +\
+        "`PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)" + "\r\n" +\
+        "`DELETE /customer/{customer_id}`: Delete customer with an id of X (if the customer exists)" + "\r\n" +\
+        "`POST /customer/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer " \
+        "exists)" + "\r\n" + \
+        "'GET /customer/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts" \
+        " for customer id of X with balances between Y and Z (if customer exists)" + "\r\n" + \
+        "`GET /customer/{customer_id}/account/{account_id}`: Get account with id of Y belonging to the customer " \
+        "with id of X (if customer and account exist AND if account belongs to customer)" + "\r\n" +\
+        "`PUT /customer/{customer_id}/account/{account_id}`: Update account with id of Y belonging to customer" \
+        " with id of X (if customer and account exist AND if account belongs to customer)" + "\r\n" +\
+        "`DELETE /customer/{customer_id}/account/{account_id}`: Delete account with id of Y belonging to customer " \
+        "with id of X (if customer and account exist AND if account belongs to customer)"
+
+    return endpoints_description
 
 
 @cc.route('/api/customers')
