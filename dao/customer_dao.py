@@ -44,3 +44,26 @@ class CustomerDao:
 
                 return my_list_of_customer_objs
 
+    def get_customer_by_id(self, customer_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT * "
+                            "   FROM customers "
+                            "   WHERE id = %s", (customer_id,))
+
+                cust = cur.fetchone()
+                if not cust:
+                    return None
+
+                customer_id, first_name, last_name, date_of_birth, \
+                customer_since, email, postal_code, unit_no, \
+                mobile_phone = cust # destructuring a list
+
+                return Customer(customer_id, first_name, last_name, date_of_birth, \
+                customer_since, email, postal_code, unit_no, \
+                mobile_phone)
+
+
+
+
+
