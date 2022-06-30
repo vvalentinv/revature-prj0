@@ -73,4 +73,5 @@ def update_customer_by_id(customer_id):
             cust_attr_to_update['unit_no'], cust_attr_to_update['mobile_phone']))
     except CustomerNotFoundError as e:
         return {"message": str(e)}, 404
-
+    except InvalidParameterError as e:
+        return {"message": str(e)}, 400

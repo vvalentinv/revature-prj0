@@ -52,7 +52,7 @@ class CustomerService:
 
         updated_customer = self.customer_dao.update_customer_by_id(cust)
         if updated_customer is None:
-            raise CustomerNotFoundError(f"Customer with id {cust.get_customer_id} was not found")
+            raise CustomerNotFoundError(f"Customer with id {cust.get_customer_id()} was not found")
 
         return updated_customer.to_dict()
 
