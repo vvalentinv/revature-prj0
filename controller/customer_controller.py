@@ -65,8 +65,10 @@ def add_customer():
 
 @cc.route('/api/customers/<customer_id>', methods=['PUT'])
 def update_customer_by_id(customer_id):
-    cust_attr_to_update = request.get_json()
+
     try:
+        cust_attr_to_update = request.get_json()
+        print("-CTRL-JSON", cust_attr_to_update)
         return customer_service.update_customer_by_id(Customer(
             customer_id, None, cust_attr_to_update['last_name'], None, None,
             cust_attr_to_update['email'], cust_attr_to_update['postal_code'],

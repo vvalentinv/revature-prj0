@@ -13,11 +13,13 @@ def check_date(date):
 
 
 def validate_name(string):
+    if not string:
+        return None
     if len(string) < 2:
         raise InvalidParameterError("Names must have at least 2 letters")
-    elif " " in string:
+    if " " in string:
         raise InvalidParameterError("Username cannot contain spaces")
-
+    return True
 
 def validate_email(string):
     reg_email = r"[^@]+@[^@]+\.[^@]+"

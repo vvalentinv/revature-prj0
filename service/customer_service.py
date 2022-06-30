@@ -41,7 +41,7 @@ class CustomerService:
         return self.customer_dao.add_customer(cust).to_dict()
 
     def update_customer_by_id(self, cust):
-        if not validate_name(cust.get_first_name()):
+        if not validate_name(cust.get_last_name()):
             pass
         if validate_email(cust.get_email()):
             pass
