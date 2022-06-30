@@ -11,19 +11,19 @@ customer_service = CustomerService()
 @cc.route('/')
 def index():
     endpoints_description = "<p>How to use this API</p>" \
-                            "<p>'POST '/customers`: Creates a new customer</p>"  \
-                            "<p>`GET /customers`: Gets all customers</p>"  \
-                            "<p>`GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)</p>"  \
-                            "<p>`PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)</p>"  \
-                            "<p>`DELETE /customer/{customer_id}`: Delete customer with an id of X (if the customer exists)</p>"  \
+                            "<p>'POST '/customers`: Creates a new customer</p>" \
+                            "<p>`GET /customers`: Gets all customers</p>" \
+                            "<p>`GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)</p>" \
+                            "<p>`PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)</p>" \
+                            "<p>`DELETE /customer/{customer_id}`: Delete customer with an id of X (if the customer exists)</p>" \
                             "<p>`POST /customer/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer " \
-                            "exists)</p>"  \
+                            "exists)</p>" \
                             "<p>'GET /customer/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts" \
-                            " for customer id of X with balances between Y and Z (if customer exists)</p>"  \
+                            " for customer id of X with balances between Y and Z (if customer exists)</p>" \
                             "<p>`GET /customer/{customer_id}/account/{account_id}`: Get account with id of Y belonging to the customer " \
-                            "with id of X (if customer and account exist AND if account belongs to customer)</p>"  \
+                            "with id of X (if customer and account exist AND if account belongs to customer)</p>" \
                             "<p>`PUT /customer/{customer_id}/account/{account_id}`: Update account with id of Y belonging to customer" \
-                            " with id of X (if customer and account exist AND if account belongs to customer)</p>"  \
+                            " with id of X (if customer and account exist AND if account belongs to customer)</p>" \
                             "<p>`DELETE /customer/{customer_id}/account/{account_id}`: Delete account with id of Y belonging to customer " \
                             "with id of X (if customer and account exist AND if account belongs to customer)</p>"
 
@@ -76,9 +76,11 @@ def update_customer_by_id(customer_id):
     except InvalidParameterError as e:
         return {"message": str(e)}, 400
 
+
 @cc.route('/api/customers/<customer_id>', methods=['DELETE'])
 def delete_customer_by_id(customer_id):
     try:
-        customer_service.delete_customer_by_id(customer_id)
+        deleted_cust = customer_service.delete_customer_by_id(customer_id)
     except CustomerNotFoundError as e:
-        return {"message": str(e)},404
+        return {"message": str(e)}, 404
+    return {"message": f"The customer with account_id: {deleted_cust[0]} was deleted"}

@@ -107,5 +107,14 @@ class CustomerDao:
                 return Customer(u_cust[0], u_cust[1], u_cust[2], u_cust[3], u_cust[4],
                                 u_cust[5], u_cust[6], u_cust[7], u_cust[8])
 
+    def delete_customer_by_id(self, customer_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("DELETE FROM customers WHERE id = %s RETURNING *",
+                            (customer_id,))
+                res = cur.fetchone()
+                print(res)
+                return res
+
 
 

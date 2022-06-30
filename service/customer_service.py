@@ -61,5 +61,5 @@ class CustomerService:
         confirmed_deletion = self.customer_dao.delete_customer_by_id(customer_id)
         if confirmed_deletion is None:
             raise CustomerNotFoundError(f"Customer with id: {customer_id} was not found")
-        return confirmed_deletion.to_dict()
+        return confirmed_deletion
 
