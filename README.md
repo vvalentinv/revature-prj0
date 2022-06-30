@@ -26,7 +26,7 @@ The following endpoints and their respective verbs should support the operations
 - ~~`POST /customers`: Creates a new customer~~
 - ~~`GET /customers`: Gets all customers~~
 - ~~`GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)~~
-- `PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)
+- ~~`PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)~~
 - `DELETE /customer/{customer_id}`: Delete customer with an id of X (if the customer exists)
 - `POST /customer/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer exists)
 - These two should be the same endpoint (you will need logic for whether the query parameters exist):
