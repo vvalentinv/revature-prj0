@@ -3,7 +3,7 @@ import utility.helpers
 from dao.customer_dao import CustomerDao
 from exception.customer_not_found import CustomerNotFoundError
 from exception.invalid_parameter import InvalidParameterError
-from utility.helpers import validate_name, check_date, validate_email
+from utility.helpers import validate_name, check_date, validate_email, validate_postal_code
 
 
 class CustomerService:
@@ -34,8 +34,8 @@ class CustomerService:
             pass
         if validate_email(cust.get_email()):
             pass
-        elif not 4 < len(cust.get_postal_code()) < 7:
-            raise InvalidParameterError("Postal code length must be equal to 5 or 6")
+        if validate_postal_code(cust.get_postal_code()):
+            pass
         elif not re.match(reg_phone, cust.get_mobile_phone()):
             raise InvalidParameterError("mobile phone format 555-555-5555")
 

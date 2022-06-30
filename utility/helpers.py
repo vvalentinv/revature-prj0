@@ -26,4 +26,10 @@ def validate_email(string):
     return True
 
 
+def validate_postal_code(string):
+    if not 4 < len(string.replace(" ", "")) < 7:
+        raise InvalidParameterError("Postal code length must be equal to 5 or 6 without any space")
+    return True
+
+
 
