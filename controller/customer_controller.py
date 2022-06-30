@@ -75,3 +75,10 @@ def update_customer_by_id(customer_id):
         return {"message": str(e)}, 404
     except InvalidParameterError as e:
         return {"message": str(e)}, 400
+
+@cc.route('/api/customers/<customer_id>', methods=['DELETE'])
+def delete_customer_by_id(customer_id):
+    try:
+        customer_service.delete_customer_by_id(customer_id)
+    except CustomerNotFoundError as e:
+        return {"message": str(e)},404
