@@ -3,7 +3,7 @@ import utility.helpers
 from dao.customer_dao import CustomerDao
 from exception.customer_not_found import CustomerNotFoundError
 from exception.invalid_parameter import InvalidParameterError
-from utility.helpers import validate_name
+from utility.helpers import validate_name, check_date, validate_email
 
 
 class CustomerService:
@@ -27,14 +27,13 @@ class CustomerService:
 
     def add_customer(self, cust):
         reg_phone = r"[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        reg_email = r"[^@]+@[^@]+\.[^@]+"
-        utility.helpers.check_date(cust.get_date_of_birth())
+
         if not validate_name(cust.get_first_name()) or not validate_name(cust.get_last_name()):
             pass
-        elif not utility.helpers.check_date(cust.get_date_of_birth()):
+        if check_date(cust.get_date_of_birth()):
             pass
-        elif not re.match(reg_email, cust.get_email()):
-            raise InvalidParameterError("accepted email address format is <username>@<company>.<domain>")
+        if validate_email(cust.get_email()):
+            pass
         elif not 4 < len(cust.get_postal_code()) < 7:
             raise InvalidParameterError("Postal code length must be equal to 5 or 6")
         elif not re.match(reg_phone, cust.get_mobile_phone()):
