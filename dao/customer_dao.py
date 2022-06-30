@@ -91,4 +91,7 @@ class CustomerDao:
                 customer_since, email, postal_code, unit_no, \
                 mobile_phone)
 
+    def update_customer_by_id(self, ):
+        pass
+
 

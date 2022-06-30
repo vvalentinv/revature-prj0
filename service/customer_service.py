@@ -41,7 +41,20 @@ class CustomerService:
         return self.customer_dao.add_customer(cust).to_dict()
 
     def update_customer_by_id(self, cust):
-        pass
+        if not validate_name(cust.get_first_name()):
+            pass
+        if validate_email(cust.get_email()):
+            pass
+        if validate_postal_code(cust.get_postal_code()):
+            pass
+        if validate_phone(cust.get_mobile_phone()):
+            pass
+
+        updated_customer = self.customer_dao.update_customer_by_id(cust)
+        if updated_customer is None:
+            raise CustomerNotFoundError(f"Customer with id {cust.get_customer_id} was not found")
+
+        return updated_customer.to_dict()
 
 
 
