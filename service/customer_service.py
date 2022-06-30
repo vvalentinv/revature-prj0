@@ -3,6 +3,8 @@ import utility.helpers
 from dao.customer_dao import CustomerDao
 from exception.customer_not_found import CustomerNotFoundError
 from exception.invalid_parameter import InvalidParameterError
+from utility.helpers import validate_name, check_date, validate_email, \
+    validate_postal_code, validate_phone
 
 
 class CustomerService:
@@ -25,20 +27,34 @@ class CustomerService:
         return cust.to_dict()
 
     def add_customer(self, cust):
-        reg_phone = r"[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        reg_email = r"[^@]+@[^@]+\.[^@]+"
-        if len(cust.get_first_name()) < 2 or len(cust.get_last_name()) < 2:
-            raise InvalidParameterError("Names must have at least 2 letters")
-        elif " " in cust.get_first_name() or " " in cust.get_last_name():
-            raise InvalidParameterError("Username cannot contain spaces")
-        elif not utility.helpers.check_date(cust.get_date_of_birth()):
-            raise InvalidParameterError("Minimum Customer age must be 16 years-old")
-        elif not re.match(reg_email, cust.get_email()):
-            raise InvalidParameterError("accepted email address format is <username>@<company>.<domain>")
-        elif not 4 < len(cust.get_postal_code()) < 7:
-            raise InvalidParameterError("Postal code length must be equal to 5 or 6")
-        elif not re.match(reg_phone, cust.get_mobile_phone()):
-            raise InvalidParameterError("mobile phone format 555-555-5555")
+        if not validate_name(cust.get_first_name()) or not validate_name(cust.get_last_name()):
+            pass
+        if check_date(cust.get_date_of_birth()):
+            pass
+        if validate_email(cust.get_email()):
+            pass
+        if validate_postal_code(cust.get_postal_code()):
+            pass
+        if validate_phone(cust.get_mobile_phone()):
+            pass
 
         return self.customer_dao.add_customer(cust).to_dict()
+
+    def update_customer_by_id(self, cust):
+        if not validate_name(cust.get_last_name()):
+            pass
+        if validate_email(cust.get_email()):
+            pass
+        if validate_postal_code(cust.get_postal_code()):
+            pass
+        if validate_phone(cust.get_mobile_phone()):
+            pass
+
+        updated_customer = self.customer_dao.update_customer_by_id(cust)
+        if updated_customer is None:
+            raise CustomerNotFoundError(f"Customer with id {cust.get_customer_id} was not found")
+
+        return updated_customer.to_dict()
+
+
 

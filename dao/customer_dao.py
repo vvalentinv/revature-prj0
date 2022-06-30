@@ -68,7 +68,7 @@ class CustomerDao:
         last_name = cust.get_last_name()
         date_of_birth = cust.get_date_of_birth()
         email = cust.get_email()
-        postal_code = cust.get_postal_code()
+        postal_code = cust.get_postal_code().replace(" ", "")  # ensure postal code does not contain spaces
         unit_no = cust.get_unit_no()
         mobile_phone = cust.get_mobile_phone()
 
@@ -90,5 +90,22 @@ class CustomerDao:
                 return Customer(customer_id, first_name, last_name, date_of_birth, \
                 customer_since, email, postal_code, unit_no, \
                 mobile_phone)
+
+    def update_customer_by_id(self, cust):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("UPDATE customers SET last_name = %s, email = %s, postal_code = %s, unit_no = %s,"
+                            "mobile_phone = %s WHERE id = %s RETURNING *",
+                            (cust.get_last_name(), cust.get_email(), cust.get_postal_code(),
+                             cust.get_unit_no(), cust.get_mobile_phone(),
+                             cust.get_customer_id()))
+                u_cust = cur.fetchone()
+                print(u_cust)
+                if not u_cust:
+                    return None
+
+                return Customer(u_cust[0], u_cust[1], u_cust[2], u_cust[3], u_cust[4],
+                                u_cust[5], u_cust[6], u_cust[7], u_cust[8])
+
 
 

@@ -61,3 +61,16 @@ def add_customer():
         return {
                    "message": str(e)
                }, 400
+
+
+@cc.route('/api/customers/<customer_id>', methods=['PUT'])
+def update_customer_by_id(customer_id):
+    cust_attr_to_update = request.get_json()
+    try:
+        return customer_service.update_customer_by_id(Customer(
+            customer_id, None, cust_attr_to_update['last_name'], None, None,
+            cust_attr_to_update['email'], cust_attr_to_update['postal_code'],
+            cust_attr_to_update['unit_no'], cust_attr_to_update['mobile_phone']))
+    except CustomerNotFoundError as e:
+        return {"message": str(e)}, 404
+
