@@ -68,7 +68,7 @@ class CustomerDao:
         last_name = cust.get_last_name()
         date_of_birth = cust.get_date_of_birth()
         email = cust.get_email()
-        postal_code = cust.get_postal_code()
+        postal_code = cust.get_postal_code().replace(" ", "")  # ensure postal code does not contain spaces
         unit_no = cust.get_unit_no()
         mobile_phone = cust.get_mobile_phone()
 

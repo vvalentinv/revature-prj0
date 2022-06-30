@@ -32,4 +32,9 @@ def validate_postal_code(string):
     return True
 
 
+def validate_phone(string):
+    reg_phone = r"[0-9]{3}-[0-9]{3}-[0-9]{4}"
+    if not re.match(reg_phone, string):
+        raise InvalidParameterError("mobile phone format 555-555-5555")
+    return True
 
