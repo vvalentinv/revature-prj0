@@ -23,9 +23,9 @@ Leveraging Python, create a RESTful API application that supports two main resou
 ### Endpoint Requirements
 The following endpoints and their respective verbs should support the operations as described. In the HTTP response, use appropriate status codes (as specific as possible) and response bodies where applicable.
 
-- `POST /customers`: Creates a new customer
-- `GET /customers`: Gets all customers
-- `GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)
+- ~~`POST /customers`: Creates a new customer~~
+- ~~`GET /customers`: Gets all customers~~
+- ~~`GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)~~
 - `PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)
 - `DELETE /customer/{customer_id}`: Delete customer with an id of X (if the customer exists)
 - `POST /customer/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer exists)
