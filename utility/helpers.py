@@ -40,3 +40,35 @@ def validate_phone(string):
     if not re.match(reg_phone, string):
         raise InvalidParameterError("mobile phone format 555-555-5555")
     return True
+
+
+def validate_args(args):
+    args_length = 0
+    if args:
+        args_length = len(args)
+    if args_length == 2:
+        if 'amountLessThan' in args.keys():
+            pass
+        else:
+            raise InvalidParameterError('the expected parameter name is "amountLessThan" ')
+        if 'amountGreaterThan' in args.keys():
+            pass
+        else:
+            raise InvalidParameterError('the expected parameter name is "amountGreaterThan" ')
+        if 0 <= float(args['amountGreaterThan']) <= float(args['amountLessThan']):
+            pass
+        else:
+            raise InvalidParameterError('"amountGreaterThan" is expected to be equal or smaller than "amountLessThan" '
+                                        'and positive')
+
+        return args
+    if args_length == 1:
+        if args.to_dict().get('amountLessThan') and float(args.to_dict().get('amountLessThan')) > 0:
+            return args
+        elif args.to_dict().get('amountGreaterThan') and float(args.to_dict().get('amountGreaterThan')) > 0:
+            return args
+        else:
+            raise InvalidParameterError('the expected parameter name is "amountLessThan" '
+                                        'or "amountGreaterThan" with positive values')
+
+    return None
