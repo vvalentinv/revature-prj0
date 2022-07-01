@@ -74,6 +74,6 @@ def validate_args(args):
             raise InvalidParameterError('the expected parameter name is "amountLessThan" '
                                         'or "amountGreaterThan"')
     return None
-                
+
 
 

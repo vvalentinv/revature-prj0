@@ -17,7 +17,7 @@ class CustomerDao:
                 cur.execute("SELECT * FROM customers")
 
                 my_list_of_customer_objs = []
-                # iterate over each row of the users table
+                # iterate over each row of the results
                 for customer in cur:
                     customer_id = customer[0]
                     first_name = customer[1]
