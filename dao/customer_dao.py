@@ -19,7 +19,6 @@ class CustomerDao:
                 my_list_of_customer_objs = []
                 # iterate over each row of the users table
                 for customer in cur:
-                    print("------------------------------", customer)
                     customer_id = customer[0]
                     first_name = customer[1]
                     last_name = customer[2]
@@ -50,7 +49,6 @@ class CustomerDao:
                             "   WHERE id = %s", (customer_id,))
 
                 cust = cur.fetchone()
-                print("======================", cust)
                 if not cust:
                     return None
 
@@ -100,12 +98,19 @@ class CustomerDao:
                              cust.get_unit_no(), cust.get_mobile_phone(),
                              cust.get_customer_id()))
                 u_cust = cur.fetchone()
-                print(u_cust)
                 if not u_cust:
                     return None
 
                 return Customer(u_cust[0], u_cust[1], u_cust[2], u_cust[3], u_cust[4],
                                 u_cust[5], u_cust[6], u_cust[7], u_cust[8])
+
+    def delete_customer_by_id(self, customer_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("DELETE FROM customers WHERE id = %s RETURNING *",
+                            (customer_id,))
+                return cur.fetchone()
+
 
 
 
