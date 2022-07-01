@@ -32,7 +32,7 @@ def add_account_by_customer_id(customer_id):
 def get_accounts_by_customer_id(customer_id):
     args = request.args
     try:
-        return account_service.get_accounts_by_customer_id(customer_id, args), 200
+        return {"accounts": account_service.get_accounts_by_customer_id(customer_id, args)}, 200
     except InvalidParameterError as e:
         return {
                    "message": str(e)

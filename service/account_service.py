@@ -22,5 +22,8 @@ class AccountService:
         if not self.customer_dao.get_customer_by_id(customer_id):
             raise CustomerNotFoundError(f"The requested customer ID:"
                                         f" {customer_id} was not found")
-        validate_args(args)
-        return self.account_dao.get_accounts_by_customer_id(customer_id, args).to_dict()
+        args = validate_args(args)
+        res = []
+        for acc in self.account_dao.get_accounts_by_customer_id(customer_id, args):
+            res.append(acc.to_dict())
+        return res

@@ -22,16 +22,35 @@ class AccountDao:
         amountLessThan = None
         if args:
             args_length = len(args)
+        else:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT * FROM accounts as a "
+                                "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
+                                "WHERE awc.customer_id = %s",
+                                (customer_id,))
+
+                    accounts = []
+                    # iterate over each row of the results
+                    for account in cur:
+                        account_id = account[0]
+                        type_id = account[1]
+                        currency_id = account[2]
+                        balance = account[3]
+
+                        accounts.append(Account(account_id, type_id, currency_id, balance))
+
+                    return accounts
         if args_length == 2:
             amountGreaterThan = args['amountGreaterThan']
             amountLessThan = args['amountLessThan']
 
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    cur.execute("SELECT * FROM accounts as a"
-                                "JOIN customers_with_accounts as awc ON a.id = awc.account_id"
-                                "WHERE awc.customer_id = %s AND %s > amountGreaterThan AND "
-                                "%s < amountLessThan", (customer_id,amountGreaterThan, amountLessThan))
+                    cur.execute("SELECT * FROM accounts as a "
+                                "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
+                                "WHERE awc.customer_id = %s AND a.balance > %s AND "
+                                "a.balance < %s", (customer_id, amountGreaterThan, amountLessThan))
 
                     accounts = []
                     # iterate over each row of the results
@@ -48,13 +67,43 @@ class AccountDao:
         elif args_length == 1:
             if 'amountLessThan' in args.keys():
                 amountLessThan = args['amountLessThan']
+                with pool.connection() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute("SELECT * FROM accounts as a "
+                                    "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
+                                    "WHERE awc.customer_id = %s AND "
+                                    "a.balance < %s", (customer_id, amountLessThan))
+
+                        accounts = []
+                        # iterate over each row of the results
+                        for account in cur:
+                            account_id = account[0]
+                            type_id = account[1]
+                            currency_id = account[2]
+                            balance = account[3]
+
+                            accounts.append(Account(account_id, type_id, currency_id, balance))
+
+                        return accounts
             else:
                 amountGreaterThan = args['amountGreaterThan']
-        else:
-            pass
+                with pool.connection() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute("SELECT * FROM accounts as a "
+                                    "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
+                                    "WHERE awc.customer_id = %s AND a.balance > %s", (customer_id, amountGreaterThan))
 
+                        accounts = []
+                        # iterate over each row of the results
+                        for account in cur:
+                            account_id = account[0]
+                            type_id = account[1]
+                            currency_id = account[2]
+                            balance = account[3]
 
+                            accounts.append(Account(account_id, type_id, currency_id, balance))
 
+                        return accounts
 
 
 
