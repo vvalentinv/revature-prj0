@@ -14,4 +14,5 @@ class AccountDao:
                 added_acc = cur.fetchone()
                 cur.execute("INSERT INTO customers_with_accounts (account_id, customer_id)"
                             "VALUES (%s, %s) RETURNING *", (added_acc[0], customer_id))
-                return added_acc
+                return Account(added_acc[0], added_acc[1], added_acc[2], added_acc[3])
+

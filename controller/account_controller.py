@@ -28,6 +28,6 @@ def add_account_by_customer_id(customer_id):
                }, 404
 
 
-@ac.route('/api', methods=['POST'])
-def hello():
+@ac.route('/api/customers/<customer_id>/accounts/<account_id>', methods=['POST'])
+def add_existing_account_by_customer_id(customer_id, account_id):
     return "test"

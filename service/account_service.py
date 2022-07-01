@@ -16,5 +16,5 @@ class AccountService:
         if not self.customer_dao.get_customer_by_id(customer_id):
             raise CustomerNotFoundError(f"The requested customer ID:"
                                         f" {customer_id} was not found")
-        return self.account_dao.add_account_by_customer_id(account, customer_id)
+        return self.account_dao.add_account_by_customer_id(account, customer_id).to_dict()
 
