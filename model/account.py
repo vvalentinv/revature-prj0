@@ -3,7 +3,7 @@ class Account:
                  account_id,
                  type_id,
                  currency_id,
-                 balance,):
+                 balance):
         self.__account_id = account_id
         self.__type_id = type_id
         self.__currency_id = currency_id

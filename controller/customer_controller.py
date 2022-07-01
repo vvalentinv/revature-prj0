@@ -47,7 +47,7 @@ def get_customer_by_id(customer_id):
                }, 404
 
 
-@cc.route('/api/customers', methods=['POST'])  # GET /api/customers/<customer_id>
+@cc.route('/api/customers', methods=['POST'])  
 def add_customer():
     cust = request.get_json()
     customer = Customer(None, cust['first_name'], cust['last_name'],

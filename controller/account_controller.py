@@ -8,10 +8,12 @@ ac = Blueprint('account_controller', __name__)
 account_service = AccountService()
 
 
-@ac.route('/customer/{customer_id}/accounts', methods=['Post'])
+@ac.route('/api/customers/{customer_id}/accounts', methods=['POST'])
 def add_account_by_customer_id(customer_id):
     acc = request.get_json()
+    print(acc)
     account = Account(None, acc['type_id'], acc['currency_id'], acc['balance'])
+
     try:
         return account_service.add_account_by_customer_id(account, customer_id), 201  # Dictionary representation of the newly added user
         # 201 created
