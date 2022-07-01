@@ -19,7 +19,6 @@ class CustomerDao:
                 my_list_of_customer_objs = []
                 # iterate over each row of the users table
                 for customer in cur:
-                    print("------------------------------", customer)
                     customer_id = customer[0]
                     first_name = customer[1]
                     last_name = customer[2]
@@ -50,7 +49,6 @@ class CustomerDao:
                             "   WHERE id = %s", (customer_id,))
 
                 cust = cur.fetchone()
-                print("======================", cust)
                 if not cust:
                     return None
 
@@ -100,7 +98,6 @@ class CustomerDao:
                              cust.get_unit_no(), cust.get_mobile_phone(),
                              cust.get_customer_id()))
                 u_cust = cur.fetchone()
-                print(u_cust)
                 if not u_cust:
                     return None
 

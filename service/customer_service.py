@@ -1,8 +1,5 @@
-import re
-import utility.helpers
 from dao.customer_dao import CustomerDao
 from exception.customer_not_found import CustomerNotFoundError
-from exception.invalid_parameter import InvalidParameterError
 from utility.helpers import validate_name, check_date, validate_email, \
     validate_postal_code, validate_phone
 
