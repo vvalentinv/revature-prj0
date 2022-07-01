@@ -18,3 +18,6 @@ class AccountService:
                                         f" {customer_id} was not found")
         return self.account_dao.add_account_by_customer_id(account, customer_id).to_dict()
 
+    def get_accounts_by_customer_id(self, customer_id, args):
+        pass
+

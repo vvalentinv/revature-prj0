@@ -28,6 +28,16 @@ def add_account_by_customer_id(customer_id):
                }, 404
 
 
-@ac.route('/api/customers/<customer_id>/accounts/<account_id>', methods=['POST'])
-def add_existing_account_by_customer_id(customer_id, account_id):
-    return "test"
+@ac.route('/api/customers/<customer_id>/accounts')
+def get_accounts_by_customer_id(customer_id):
+    args = request.args
+    try:
+        return account_service.get_accounts_by_customer_id(customer_id, args), 200
+    except InvalidParameterError as e:
+        return {
+                   "message": str(e)
+               }, 400
+    except CustomerNotFoundError as e:
+        return {
+                   "message": str(e)
+               }, 404
