@@ -21,6 +21,7 @@ def validate_name(string):
         raise InvalidParameterError("Username cannot contain spaces")
     return True
 
+
 def validate_email(string):
     reg_email = r"[^@]+@[^@]+\.[^@]+"
     if not re.match(reg_email, string):
@@ -39,4 +40,3 @@ def validate_phone(string):
     if not re.match(reg_phone, string):
         raise InvalidParameterError("mobile phone format 555-555-5555")
     return True
-
