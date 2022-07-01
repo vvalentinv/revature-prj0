@@ -16,3 +16,6 @@ class AccountDao:
                             "VALUES (%s, %s) RETURNING *", (added_acc[0], customer_id))
                 return Account(added_acc[0], added_acc[1], added_acc[2], added_acc[3])
 
+    def get_accounts_by_customer_id(self, customer_id, args):
+        pass
+
