@@ -17,9 +17,7 @@ class AccountDao:
                 return Account(added_acc[0], added_acc[1], added_acc[2], added_acc[3])
 
     def get_accounts_by_customer_id(self, customer_id, args):
-        args_length = 0
-        amountGreaterThan = None
-        amountLessThan = None
+
         if args:
             args_length = len(args)
         else:
@@ -105,5 +103,23 @@ class AccountDao:
 
                         return accounts
 
+    def get_account_by_id(self, account_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT * FROM accounts WHERE id = %s", (account_id,))
+                account = cur.fetchone()
+                if not account:
+                    return None
+                return Account(account[0], account[1], account[2], account[3])
 
+    def get_customer_account_by_account_id(self, customer_id, account_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT * FROM customers_with_accounts WHERE account_id = %s and customer_id = %s",
+                            (account_id, customer_id))
+                account_customer_link = cur.fetchone()
+                if not account_customer_link:
+                    return None
+                return account_customer_link
 
+    
