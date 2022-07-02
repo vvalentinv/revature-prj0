@@ -46,9 +46,9 @@ def get_accounts_by_customer_id(customer_id):
 
 
 @ac.route('/api/customers/<customer_id>/accounts/<account_id>')
-def get_account_by_account_id(customer_id, account_id):
+def get_customer_account_by_account_id(customer_id, account_id):
     try:
-        return account_service.get_account_by_account_id(customer_id, account_id), 200
+        return account_service.get_customer_account_by_account_id(customer_id, account_id), 200
     except UnauthorizedAccess as e:
         return {
                    "message": str(e)
