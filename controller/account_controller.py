@@ -3,6 +3,8 @@ from model.account import Account
 from service.account_service import AccountService
 from exception.customer_not_found import CustomerNotFoundError
 from exception.invalid_parameter import InvalidParameterError
+from exception.account_not_found import AccountNotFound
+from exception.unauthorized_access import UnauthorizedAccess
 
 ac = Blueprint('account_controller', __name__)
 account_service = AccountService()
@@ -38,6 +40,24 @@ def get_accounts_by_customer_id(customer_id):
                    "message": str(e)
                }, 400
     except CustomerNotFoundError as e:
+        return {
+                   "message": str(e)
+               }, 404
+
+
+@ac.route('/api/customers/<customer_id>/accounts/<account_id>')
+def get_account_by_account_id(customer_id, account_id):
+    try:
+        return account_service.get_account_by_account_id(customer_id, account_id), 200
+    except UnauthorizedAccess as e:
+        return {
+                   "message": str(e)
+               }, 403
+    except CustomerNotFoundError as e:
+        return {
+                   "message": str(e)
+               }, 404
+    except AccountNotFound as e:
         return {
                    "message": str(e)
                }, 404
