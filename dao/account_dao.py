@@ -122,4 +122,15 @@ class AccountDao:
                     return None
                 return account_customer_link
 
+    def update_account_by_id(self, account):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("UPDATE accounts SET type_id = %s, currency_id = %s, balance = %s WHERE id = %s RETURNING *"
+                            , (account.get_type_id(), account.get_currency_id(), account.get_balance(),
+                               account.get_account_id()))
+                account = cur.fetchone()
+                if not account:
+                    return None
+                return Account(account[0], account[1], account[2], account[3])
+
     

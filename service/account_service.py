@@ -3,6 +3,7 @@ from dao.account_dao import AccountDao
 from dao.customer_dao import CustomerDao
 from exception.customer_not_found import CustomerNotFoundError
 from exception.account_not_found import AccountNotFound
+from exception.unauthorized_access import UnauthorizedAccess
 from utility.helpers import validate_name, check_date, validate_email, \
     validate_postal_code, validate_phone, validate_args
 
@@ -37,8 +38,19 @@ class AccountService:
         if not account:
             raise AccountNotFound(f"The requested account ID:{account_id} was not found")
         if not self.account_dao.get_customer_account_by_account_id(customer_id, account_id):
-            raise AccountNotFound(f"The requested account ID:"
-                                  f"{account_id} is not associated with the provided customer ID:{customer_id}")
+            raise UnauthorizedAccess(f"The requested account ID:"
+                                     f"{account_id} is not associated with the provided customer ID:{customer_id}")
         else:
             return account.to_dict()
-    
+
+    def update_customer_account_by_account_id(self, customer_id, account):
+        updated_account = self.account_dao.update_account_by_id(account)
+        if not self.customer_dao.get_customer_by_id(customer_id):
+            raise CustomerNotFoundError(f"The requested customer ID:{customer_id} was not found")
+        if not self.account_dao.get_account_by_id(account.get_account_id()):
+            raise AccountNotFound(f"The requested account ID:{account.get_account_id()} was not found")
+        if not self.account_dao.get_customer_account_by_account_id(customer_id, account.get_account_id()):
+            raise UnauthorizedAccess(f"The requested account ID:"
+                                     f"{account.get_account_id()} is not associated with the provided customer ID:{customer_id}")
+        else:
+            return updated_account.to_dict()
