@@ -133,4 +133,14 @@ class AccountDao:
                     return None
                 return Account(account[0], account[1], account[2], account[3])
 
+    def delete_account_by_id(self, account_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("DELETE FROM accounts WHERE id = %s RETURNING *", (account_id, ))
+                account = cur.fetchone()
+                if not account:
+                    return None
+                return Account(account[0], account[1], account[2], account[3])
+
+
     
