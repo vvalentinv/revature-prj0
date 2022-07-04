@@ -33,8 +33,8 @@ def index():
 @cc.route('/api/customers')
 def get_all_customers():
     return {
-        "users": customer_service.get_all_customers()  # a list of dictionaries
-    }
+        "customers": customer_service.get_all_customers()  # a list of dictionaries
+    }, 200
 
 
 @cc.route('/api/customers/<customer_id>')  # GET /api/customers/<customer_id>

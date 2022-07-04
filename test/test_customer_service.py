@@ -1,0 +1,99 @@
+from controller.customer_controller import customer_service
+from model.customer import Customer
+
+
+def test_get_all_customers(mocker):
+    #  Arrange
+    def mock_get_all_customers(self):
+        inserts = [(1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-500'),
+                   (2, 'Jane', 'Doe', '1908-01-01', '1908-01-02', 'a@a.ca', 'M2J 1M5', '555', '555-555-501'),
+                   (3, 'test', 'user3', '1908-01-01', '1908-01-03', 'a@a.ca', 'M2J 1M5', '555', '555-555-502')]
+        res = []
+        for record in inserts:
+            res.append(Customer(record[0], record[1], record[2], record[3], record[4],
+                                record[5], record[6], record[7], record[8]))
+        return res
+
+    mocker.patch('dao.customer_dao.CustomerDao.get_all_customers', mock_get_all_customers)
+    # Act
+    actual = customer_service.get_all_customers()
+    print(actual)
+    # Assert
+    assert actual == [{'customer_id': 1,
+                       'first_name': 'John',
+                       'last_name': 'Doe',
+                       'date_of_birth': '1908-01-01',
+                       'customer_since': '2000-01-01',
+                       'email': 'a@a.ca',
+                       'postal_code': 'M2J 1M5',
+                       'unit_no': '555',
+                       'mobile_phone': '555-555-500'
+                       },
+                      {'customer_id': 2,
+                       'first_name': 'Jane',
+                       'last_name': 'Doe',
+                       'date_of_birth': '1908-01-01',
+                       'customer_since': '1908-01-02',
+                       'email': 'a@a.ca',
+                       'postal_code': 'M2J 1M5',
+                       'unit_no':'555',
+                       'mobile_phone': '555-555-501'
+                       },
+                      {'customer_id': 3,
+                       'first_name': 'test',
+                       'last_name': 'user3',
+                       'date_of_birth': '1908-01-01',
+                       'customer_since': '1908-01-03',
+                       'email': 'a@a.ca',
+                       'postal_code': 'M2J 1M5',
+                       'unit_no': '555',
+                       'mobile_phone': '555-555-502'
+                       }]
+
+def test_get_all_customers(mocker):
+    #  Arrange
+    def mock_get_all_customers(self):
+        inserts = [(1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-500'),
+                   (2, 'Jane', 'Doe', '1908-01-01', '1908-01-02', 'a@a.ca', 'M2J 1M5', '555', '555-555-501'),
+                   (3, 'test', 'user3', '1908-01-01', '1908-01-03', 'a@a.ca', 'M2J 1M5', '555', '555-555-502')]
+        res = []
+        for record in inserts:
+            res.append(Customer(record[0], record[1], record[2], record[3], record[4],
+                                record[5], record[6], record[7], record[8]))
+        return res
+
+    mocker.patch('dao.customer_dao.CustomerDao.get_all_customers', mock_get_all_customers)
+    # Act
+    actual = customer_service.get_all_customers()
+    print(actual)
+    # Assert
+    assert actual == [{'customer_id': 1,
+                       'first_name': 'John',
+                       'last_name': 'Doe',
+                       'date_of_birth': '1908-01-01',
+                       'customer_since': '2000-01-01',
+                       'email': 'a@a.ca',
+                       'postal_code': 'M2J 1M5',
+                       'unit_no': '555',
+                       'mobile_phone': '555-555-500'
+                       },
+                      {'customer_id': 2,
+                       'first_name': 'Jane',
+                       'last_name': 'Doe',
+                       'date_of_birth': '1908-01-01',
+                       'customer_since': '1908-01-02',
+                       'email': 'a@a.ca',
+                       'postal_code': 'M2J 1M5',
+                       'unit_no':'555',
+                       'mobile_phone': '555-555-501'
+                       },
+                      {'customer_id': 3,
+                       'first_name': 'test',
+                       'last_name': 'user3',
+                       'date_of_birth': '1908-01-01',
+                       'customer_since': '1908-01-03',
+                       'email': 'a@a.ca',
+                       'postal_code': 'M2J 1M5',
+                       'unit_no': '555',
+                       'mobile_phone': '555-555-502'
+                       }]
