@@ -20,7 +20,7 @@ def test_get_all_customers(mocker):
     mocker.patch('dao.customer_dao.CustomerDao.get_all_customers', mock_get_all_customers)
     # Act
     actual = customer_service.get_all_customers()
-    print(actual)
+
     # Assert
     assert actual == [{'customer_id': 1,
                        'first_name': 'John',
@@ -68,7 +68,7 @@ def test_get_customer_by_id_1(mocker):
     mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     # Act
     actual = customer_service.get_customer_by_id(1)
-    print(actual)
+
     # Assert
     assert actual == {'customer_id': 1,
                       'first_name': 'John',
@@ -111,7 +111,7 @@ def test_delete_customer_by_id_1(mocker):
     mocker.patch('dao.customer_dao.CustomerDao.delete_customer_by_id', mock_delete_customer_by_id)
     # Act
     actual = customer_service.delete_customer_by_id(1)
-    print(actual)
+
     # Assert
     assert actual == (1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-500')
 
@@ -146,7 +146,6 @@ def test_add_customer_valid_user(mocker):
     # Act
     actual = customer_service.add_customer(Customer(None, 'John', 'Doe', '1908-01-01', None,
                                                     'a@a.ca', 'M2J 1M5', '555', '555-555-5000'))
-    print(actual)
     # Assert
     assert actual == {'customer_id': 1,
                       'first_name': 'John',
@@ -231,3 +230,20 @@ def test_add_customer_invalid_first_name_4(mocker):
         customer_service.add_customer(Customer(None, 'bob marley', 'Doe', '1908-01-01', None,
                                                'a@a.ca', 'M2J 1M5', '555', '555-555-5000'))
 
+
+def test_add_customer_invalid_email(mocker):
+    #  Arrange
+    def mock_add_customer(self, customer):
+        returned_record = (1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-5000')
+        if returned_record[0] == 1:
+            return Customer(returned_record[0], returned_record[1], returned_record[2], returned_record[3],
+                            returned_record[4], returned_record[5], returned_record[6], returned_record[7],
+                            returned_record[8])
+        else:
+            return None
+
+    mocker.patch('dao.customer_dao.CustomerDao.add_customer', mock_add_customer)
+    # Act and # Assert
+    with pytest.raises(InvalidParameter):
+        customer_service.add_customer(Customer(None, 'bob', 'Doe', '1908-01-01', None,
+                                               'aa.ca', 'M2J 1M5', '555', '555-555-5000'))
