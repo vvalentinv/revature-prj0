@@ -13,11 +13,16 @@ def check_date(date):
 
 
 def validate_name(string):
-    reg_name = r"[a-zA-Z][a-zA-Z]+"
-    if not re.match(reg_name, string):
-        raise InvalidParameter("Names must have at least 2 letters and only letters a-zA-Z")
+    reg_invalid_character = r"[^a-zA-Z]"
+
+    if not string:
+        raise InvalidParameter("Names cannot be blank")
+    if re.findall(reg_invalid_character, string):
+        raise InvalidParameter("Names must have only letters a-zA-Z and no other characters or spaces")
     elif len(string) > 30:
-        raise InvalidParameter("Names are limited to 30 letters")
+        raise InvalidParameter("Names are limited to 30 letters ")
+    elif len(string) < 2:
+        raise InvalidParameter("Names must have at least 2 letters")
     return True
 
 
@@ -58,7 +63,7 @@ def validate_args(args):
             pass
         else:
             raise InvalidParameter('"amountGreaterThan" is expected to be equal or smaller than "amountLessThan" '
-                                        'and positive')
+                                   'and positive')
 
         return args
     if args_length == 1:
@@ -68,6 +73,6 @@ def validate_args(args):
             return args
         else:
             raise InvalidParameter('the expected parameter name is "amountLessThan" '
-                                        'or "amountGreaterThan" with positive values')
+                                   'or "amountGreaterThan" with positive values')
 
     return None
