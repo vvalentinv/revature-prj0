@@ -1,5 +1,6 @@
 import pytest
 from exception.customer_not_found import CustomerNotFound
+from exception.invalid_parameter import InvalidParameter
 from controller.customer_controller import customer_service
 from model.customer import Customer
 
@@ -130,7 +131,7 @@ def test_delete_customer_by_id_2(mocker):
         customer_service.delete_customer_by_id(2)
 
 
-def test_add_customer_by_id_1_valid_user(mocker):
+def test_add_customer_1_valid_user(mocker):
     #  Arrange
     def mock_add_customer(self, customer):
         returned_record = (1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-5000')
@@ -157,3 +158,21 @@ def test_add_customer_by_id_1_valid_user(mocker):
                       'unit_no': '555',
                       'mobile_phone': '555-555-5000'
                       }
+
+
+def test_add_customer_2_invalid_first_name_1(mocker):
+    #  Arrange
+    def mock_add_customer(self, customer):
+        returned_record = (1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-5000')
+        if returned_record[0] == 1:
+            return Customer(returned_record[0], returned_record[1], returned_record[2], returned_record[3],
+                            returned_record[4], returned_record[5], returned_record[6], returned_record[7],
+                            returned_record[8])
+        else:
+            return None
+
+    mocker.patch('dao.customer_dao.CustomerDao.add_customer', mock_add_customer)
+    # Act and # Assert
+    with pytest.raises(InvalidParameter):
+        customer_service.add_customer(Customer(None, '', 'Doe', '1908-01-01', None,
+                                               'a@a.ca', 'M2J 1M5', '555', '555-555-5000'))

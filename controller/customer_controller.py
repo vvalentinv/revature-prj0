@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from model.customer import Customer
 from service.customer_service import CustomerService
 from exception.customer_not_found import CustomerNotFound
-from exception.invalid_parameter import InvalidParameterError
+from exception.invalid_parameter import InvalidParameter
 
 cc = Blueprint('customer_controller', __name__)
 customer_service = CustomerService()
@@ -57,7 +57,7 @@ def add_customer():
     try:
         return customer_service.add_customer(customer), 201  # Dictionary representation of the newly added user
         # 201 created
-    except InvalidParameterError as e:
+    except InvalidParameter as e:
         return {
                    "message": str(e)
                }, 400
@@ -73,7 +73,7 @@ def update_customer_by_id(customer_id):
             cust_attr_to_update['unit_no'], cust_attr_to_update['mobile_phone']))
     except CustomerNotFound as e:
         return {"message": str(e)}, 404
-    except InvalidParameterError as e:
+    except InvalidParameter as e:
         return {"message": str(e)}, 400
 
 

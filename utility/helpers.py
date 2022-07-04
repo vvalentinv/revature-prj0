@@ -1,6 +1,6 @@
 import re
 from utility.db_connection import pool
-from exception.invalid_parameter import InvalidParameterError
+from exception.invalid_parameter import InvalidParameter
 
 
 def check_date(date):
@@ -8,37 +8,36 @@ def check_date(date):
         with conn.cursor() as cur:
             cur.execute("SELECT current_date - interval '16 year' <= %s;", (date,))
             if cur.fetchone()[0]:
-                raise InvalidParameterError("Minimum Customer age must be 16 years-old")
+                raise InvalidParameter("Minimum Customer age must be 16 years-old")
             return True
 
 
 def validate_name(string):
-    if not string:
-        return None
-    if len(string) < 2:
-        raise InvalidParameterError("Names must have at least 2 letters")
-    if " " in string:
-        raise InvalidParameterError("Username cannot contain spaces")
+    reg_name = r"[a-zA-Z][a-zA-Z]+"
+    if not re.match(reg_name, string):
+        raise InvalidParameter("Names must have at least 2 letters and only letters a-zA-Z")
+    elif len(string) > 30:
+        raise InvalidParameter("Names are limited to 30 letters")
     return True
 
 
 def validate_email(string):
     reg_email = r"[^@]+@[^@]+\.[^@]+"
     if not re.match(reg_email, string):
-        raise InvalidParameterError("accepted email address format is <username>@<company>.<domain>")
+        raise InvalidParameter("accepted email address format is <username>@<company>.<domain>")
     return True
 
 
 def validate_postal_code(string):
     if not 4 < len(string.replace(" ", "")) < 7:
-        raise InvalidParameterError("Postal code length must be equal to 5 or 6 without any space")
+        raise InvalidParameter("Postal code length must be equal to 5 or 6 without any space")
     return True
 
 
 def validate_phone(string):
     reg_phone = r"[0-9]{3}-[0-9]{3}-[0-9]{4}"
     if not re.match(reg_phone, string):
-        raise InvalidParameterError("mobile phone format 555-555-5555")
+        raise InvalidParameter("mobile phone format 555-555-5555")
     return True
 
 
@@ -50,15 +49,15 @@ def validate_args(args):
         if 'amountLessThan' in args.keys():
             pass
         else:
-            raise InvalidParameterError('the expected parameter name is "amountLessThan" ')
+            raise InvalidParameter('the expected parameter name is "amountLessThan" ')
         if 'amountGreaterThan' in args.keys():
             pass
         else:
-            raise InvalidParameterError('the expected parameter name is "amountGreaterThan" ')
+            raise InvalidParameter('the expected parameter name is "amountGreaterThan" ')
         if 0 <= float(args['amountGreaterThan']) <= float(args['amountLessThan']):
             pass
         else:
-            raise InvalidParameterError('"amountGreaterThan" is expected to be equal or smaller than "amountLessThan" '
+            raise InvalidParameter('"amountGreaterThan" is expected to be equal or smaller than "amountLessThan" '
                                         'and positive')
 
         return args
@@ -68,7 +67,7 @@ def validate_args(args):
         elif args.to_dict().get('amountGreaterThan') and float(args.to_dict().get('amountGreaterThan')) > 0:
             return args
         else:
-            raise InvalidParameterError('the expected parameter name is "amountLessThan" '
+            raise InvalidParameter('the expected parameter name is "amountLessThan" '
                                         'or "amountGreaterThan" with positive values')
 
     return None
