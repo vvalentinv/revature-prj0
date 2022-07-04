@@ -1,2 +1,2 @@
-class CustomerNotFoundError(Exception):
+class CustomerNotFound(Exception):
     pass

@@ -1,5 +1,5 @@
 from dao.customer_dao import CustomerDao
-from exception.customer_not_found import CustomerNotFoundError
+from exception.customer_not_found import CustomerNotFound
 from utility.helpers import validate_name, check_date, validate_email, \
     validate_postal_code, validate_phone
 
@@ -18,7 +18,7 @@ class CustomerService:
         cust = self.customer_dao.get_customer_by_id(customer_id)
 
         if not cust:
-            raise CustomerNotFoundError(f"The requested customer ID:"
+            raise CustomerNotFound(f"The requested customer ID:"
                                         f" {customer_id} was not found")
 
         return cust.to_dict()
@@ -49,14 +49,14 @@ class CustomerService:
 
         updated_customer = self.customer_dao.update_customer_by_id(cust)
         if updated_customer is None:
-            raise CustomerNotFoundError(f"Customer with id {cust.get_customer_id()} was not found")
+            raise CustomerNotFound(f"Customer with id {cust.get_customer_id()} was not found")
 
         return updated_customer.to_dict()
 
     def delete_customer_by_id(self, customer_id):
-        #  -here goes code to find, check account balance and delete account if empty
+        #  -here goes code to find, check account balance and call Dao layer delete account func???(business logic)
         confirmed_deletion = self.customer_dao.delete_customer_by_id(customer_id)
         if confirmed_deletion is None:
-            raise CustomerNotFoundError(f"Customer with id: {customer_id} was not found")
+            raise CustomerNotFound(f"Customer with id: {customer_id} was not found")
         return confirmed_deletion
 

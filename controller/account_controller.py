@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from model.account import Account
 from service.account_service import AccountService
-from exception.customer_not_found import CustomerNotFoundError
+from exception.customer_not_found import CustomerNotFound
 from exception.invalid_parameter import InvalidParameterError
 from exception.account_not_found import AccountNotFound
 from exception.unauthorized_access import UnauthorizedAccess
@@ -24,7 +24,7 @@ def add_account_by_customer_id(customer_id):
         return {
                    "message": str(e)
                }, 400
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {
                    "message": str(e)
                }, 404
@@ -39,7 +39,7 @@ def get_accounts_by_customer_id(customer_id):
         return {
                    "message": str(e)
                }, 400
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {
                    "message": str(e)
                }, 404
@@ -53,7 +53,7 @@ def get_customer_account_by_account_id(customer_id, account_id):
         return {
                    "message": str(e)
                }, 403
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {
                    "message": str(e)
                }, 404
@@ -74,7 +74,7 @@ def update_customer_account_by_account_id(customer_id, account_id):
         return {
                    "message": str(e)
                }, 403
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {
                    "message": str(e)
                }, 404
@@ -91,7 +91,7 @@ def delete_customer_account_by_account_id(customer_id, account_id):
         return {
                    "message": str(e)
                }, 403
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {
                    "message": str(e)
                }, 404
