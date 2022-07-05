@@ -30,16 +30,10 @@ class CustomerService:
             return self.customer_dao.add_customer(cust).to_dict()
 
     def update_customer_by_id(self, cust):
-        if not validate_name(cust.get_last_name()):
-            pass
-        if validate_email(cust.get_email()):
-            pass
-        if validate_postal_code(cust.get_postal_code()):
-            pass
-        if validate_phone(cust.get_mobile_phone()):
-            pass
-
-        updated_customer = self.customer_dao.update_customer_by_id(cust)
+        if validate_name(cust.get_first_name()) and validate_name(cust.get_last_name()) and \
+                check_date(cust.get_date_of_birth()) and validate_email(cust.get_email()) \
+                and validate_postal_code(cust.get_postal_code()) and validate_phone(cust.get_mobile_phone()):
+            updated_customer = self.customer_dao.update_customer_by_id(cust)
         if updated_customer is None:
             raise CustomerNotFound(f"Customer with id {cust.get_customer_id()} was not found")
 

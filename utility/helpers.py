@@ -28,21 +28,30 @@ def validate_name(string):
 
 def validate_email(string):
     reg_email = r"[^@]+@[^@]+\.[^@]+"
+    if not string:
+        raise InvalidParameter("email cannot be blank")
     if not re.match(reg_email, string):
         raise InvalidParameter("accepted email address format is <username>@<company>.<domain>")
     return True
 
 
 def validate_postal_code(string):
-    if not 4 < len(string.replace(" ", "")) < 7:
+    reg_invalid_character = r"[^a-zA-Z0-9]"
+    if not string:
+        raise InvalidParameter("Postal code cannot be blank")
+    if re.findall(reg_invalid_character, string):
+        raise InvalidParameter("Postal code must have only letters a-zA-Z and/or 0-9 numbers")
+    elif not 4 < len(string.replace(" ", "")) < 7:
         raise InvalidParameter("Postal code length must be equal to 5 or 6 without any space")
     return True
 
 
 def validate_phone(string):
     reg_phone = r"[0-9]{3}-[0-9]{3}-[0-9]{4}"
+    if not string:
+        raise InvalidParameter("mobile phone cannot be blank")
     if not re.match(reg_phone, string):
-        raise InvalidParameter("mobile phone format 555-555-5555")
+        raise InvalidParameter("mobile phone format <555-555-5555>")
     return True
 
 
