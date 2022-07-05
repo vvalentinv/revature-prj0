@@ -1,8 +1,8 @@
 from flask import Blueprint, request
 from model.customer import Customer
 from service.customer_service import CustomerService
-from exception.customer_not_found import CustomerNotFoundError
-from exception.invalid_parameter import InvalidParameterError
+from exception.customer_not_found import CustomerNotFound
+from exception.invalid_parameter import InvalidParameter
 
 cc = Blueprint('customer_controller', __name__)
 customer_service = CustomerService()
@@ -33,15 +33,15 @@ def index():
 @cc.route('/api/customers')
 def get_all_customers():
     return {
-        "users": customer_service.get_all_customers()  # a list of dictionaries
-    }
+        "customers": customer_service.get_all_customers()  # a list of dictionaries
+    }, 200
 
 
 @cc.route('/api/customers/<customer_id>')  # GET /api/customers/<customer_id>
 def get_customer_by_id(customer_id):
     try:
         return customer_service.get_customer_by_id(customer_id)  # dictionary
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {
                    "message": str(e)
                }, 404
@@ -57,7 +57,7 @@ def add_customer():
     try:
         return customer_service.add_customer(customer), 201  # Dictionary representation of the newly added user
         # 201 created
-    except InvalidParameterError as e:
+    except InvalidParameter as e:
         return {
                    "message": str(e)
                }, 400
@@ -71,9 +71,9 @@ def update_customer_by_id(customer_id):
             customer_id, None, cust_attr_to_update['last_name'], None, None,
             cust_attr_to_update['email'], cust_attr_to_update['postal_code'],
             cust_attr_to_update['unit_no'], cust_attr_to_update['mobile_phone']))
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {"message": str(e)}, 404
-    except InvalidParameterError as e:
+    except InvalidParameter as e:
         return {"message": str(e)}, 400
 
 
@@ -81,6 +81,6 @@ def update_customer_by_id(customer_id):
 def delete_customer_by_id(customer_id):
     try:
         deleted_cust = customer_service.delete_customer_by_id(customer_id)
-    except CustomerNotFoundError as e:
+    except CustomerNotFound as e:
         return {"message": str(e)}, 404
     return {"message": f"The customer with account_id: {deleted_cust[0]} was deleted"}
