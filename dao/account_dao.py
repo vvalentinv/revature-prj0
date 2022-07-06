@@ -27,7 +27,6 @@ class AccountDao:
                                 "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
                                 "WHERE awc.customer_id = %s",
                                 (customer_id,))
-
                     accounts = []
                     # iterate over each row of the results
                     for account in cur:
@@ -136,11 +135,32 @@ class AccountDao:
     def delete_account_by_id(self, account_id):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute("DELETE FROM accounts WHERE id = %s RETURNING *", (account_id, ))
+                cur.execute("DELETE FROM accounts WHERE id = %s RETURNING *", (account_id,))
                 account = cur.fetchone()
                 if not account:
                     return None
                 return Account(account[0], account[1], account[2], account[3])
 
+    def check_for_joined_accounts_by_id(self, account_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT COUNT(*) FROM customers_with_accounts WHERE account_id = %s",
+                            (account_id,))
+                assoc_num = cur.fetchone()
+                print(assoc_num)
+                if not assoc_num[0]:
+                    return None
+                elif assoc_num[0] >= 2:
+                    return True
+                else:
+                    return False
 
-    
+    def delete_joined_association(self, account_id, customer_id):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("DELETE FROM customers_with_accounts WHERE account_id = %s AND customer_id = %s RETURNING *"
+                            , (account_id, customer_id))
+                assoc = cur.fetchone()
+                if not assoc:
+                    return None
+                return assoc[0], assoc[1]

@@ -17,13 +17,13 @@ class AccountService:
     def add_account_by_customer_id(self, account, customer_id):
         if not self.customer_dao.get_customer_by_id(customer_id):
             raise CustomerNotFound(f"The requested customer ID:"
-                                        f" {customer_id} was not found")
+                                   f" {customer_id} was not found")
         return self.account_dao.add_account_by_customer_id(account, customer_id).to_dict()
 
     def get_accounts_by_customer_id(self, customer_id, args):
         if not self.customer_dao.get_customer_by_id(customer_id):
             raise CustomerNotFound(f"The requested customer ID:"
-                                        f" {customer_id} was not found")
+                                   f" {customer_id} was not found")
         args = validate_args(args)
         res = []
         for acc in self.account_dao.get_accounts_by_customer_id(customer_id, args):
@@ -65,5 +65,15 @@ class AccountService:
             raise UnauthorizedAccess(f"The requested account ID:"
                                      f"{account_id} is not associated with the provided customer ID:{customer_id}")
         else:
-            self.account_dao.delete_account_by_id(account_id)
-            return {"message": f"Customer account with ID: {account_id} was successfully deleted!"}
+            if self.account_dao.check_for_joined_accounts_by_id(account_id) is None:
+                return {"message": f"Customer account with ID: {account_id} is not associated with any customers"}
+            elif self.account_dao.check_for_joined_accounts_by_id(account_id):
+                assoc = self.account_dao.delete_joined_association(account_id, customer_id)
+                return {"message": f"Customer account with ID: {assoc[0]} cannot be deleted because customer "
+                                   f"with ID: {assoc[1]} is not the only account owner, however this "
+                                   f"customer is no longer associated with this account"}
+            else:
+                self.account_dao.delete_joined_association(account_id, customer_id)
+                self.account_dao.delete_account_by_id(account_id)
+            return {"message": f"Customer account with ID: {account_id} and its associations were "
+                               f"successfully deleted!"}

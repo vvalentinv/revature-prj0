@@ -41,6 +41,7 @@ class CustomerService:
 
     def delete_customer_by_id(self, customer_id):
         #  -here goes code to find, check account balance and call Dao layer delete account func???(business logic)
+
         confirmed_deletion = self.customer_dao.delete_customer_by_id(customer_id)
         if confirmed_deletion is None:
             raise CustomerNotFound(f"Customer with id: {customer_id} was not found")
