@@ -108,7 +108,15 @@ def test_delete_customer_by_id_1(mocker):
         else:
             return None
 
+    def mock_get_customer_by_id(self, cust_id):
+        return 1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-500'
+
+    def mock_get_accounts_by_customer_id(self, cust_id, args):
+        return None
+
     mocker.patch('dao.customer_dao.CustomerDao.delete_customer_by_id', mock_delete_customer_by_id)
+    mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
+    mocker.patch('dao.account_dao.AccountDao.get_accounts_by_customer_id', mock_get_accounts_by_customer_id)
     # Act
     actual = customer_service.delete_customer_by_id(1)
 
@@ -124,7 +132,10 @@ def test_delete_customer_by_id_2(mocker):
             return returned_record
         else:
             return None
+    def mock_get_customer_by_id(self, cust_id):
+        return None
 
+    mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     mocker.patch('dao.customer_dao.CustomerDao.delete_customer_by_id', mock_delete_customer_by_id)
     # Act and  # Assert
     with pytest.raises(CustomerNotFound):
@@ -349,7 +360,10 @@ def test_update_customer_valid_user(mocker):
                             returned_record[8])
         else:
             return None
+    def mock_get_customer_by_id(self, cust_id):
+        return 1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-500'
 
+    mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     mocker.patch('dao.customer_dao.CustomerDao.update_customer_by_id', mock_update_customer_by_id)
     # Act
     actual = customer_service.update_customer_by_id(Customer(None, 'John', 'Doe', '1908-01-01', None,
@@ -377,7 +391,10 @@ def test_update_customer_invalid_customer_id(mocker):
                             returned_record[8])
         else:
             return None
+    def mock_get_customer_by_id(self, cust_id):
+        return None
 
+    mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     mocker.patch('dao.customer_dao.CustomerDao.update_customer_by_id', mock_update_customer_by_id)
     # Act and # Assert
     with pytest.raises(CustomerNotFound):

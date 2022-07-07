@@ -68,7 +68,7 @@ def update_customer_by_id(customer_id):
     cust_attr_to_update = request.get_json()
     try:
         return customer_service.update_customer_by_id(Customer(
-            customer_id, None, cust_attr_to_update['last_name'], None, None,
+            customer_id, cust_attr_to_update['first_name'], cust_attr_to_update['last_name'], None, None,
             cust_attr_to_update['email'], cust_attr_to_update['postal_code'],
             cust_attr_to_update['unit_no'], cust_attr_to_update['mobile_phone']))
     except CustomerNotFound as e:
@@ -83,4 +83,5 @@ def delete_customer_by_id(customer_id):
         deleted_cust = customer_service.delete_customer_by_id(customer_id)
     except CustomerNotFound as e:
         return {"message": str(e)}, 404
-    return {"message": f"The customer with account_id: {deleted_cust[0]} was deleted"}
+    if delete_customer_by_id:
+        return {"message": f"The customer with account_id: {deleted_cust[0]} was deleted"}

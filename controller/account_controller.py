@@ -13,12 +13,10 @@ account_service = AccountService()
 @ac.route('/api/customers/<customer_id>/accounts', methods=['POST'])
 def add_account_by_customer_id(customer_id):
     acc = request.get_json()
-    print(acc)
     account = Account(None, acc['type_id'], acc['currency_id'], acc['balance'])
 
     try:
-        return account_service.add_account_by_customer_id(account,
-                                                          customer_id), 201  # Dictionary representation of the newly added user
+        return account_service.add_account_by_customer_id(account, customer_id), 201  # Dictionary representation of the newly added user
         # 201 created
     except InvalidParameter as e:
         return {
@@ -83,6 +81,7 @@ def update_customer_account_by_account_id(customer_id, account_id):
                    "message": str(e)
                }, 404
 
+
 @ac.route('/api/customers/<customer_id>/accounts/<account_id>', methods=['DELETE'])
 def delete_customer_account_by_account_id(customer_id, account_id):
     try:
@@ -99,4 +98,3 @@ def delete_customer_account_by_account_id(customer_id, account_id):
         return {
                    "message": str(e)
                }, 404
-

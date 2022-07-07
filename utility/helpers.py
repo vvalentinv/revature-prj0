@@ -23,7 +23,8 @@ def validate_name(string):
         raise InvalidParameter("Names are limited to 30 letters ")
     elif len(string) < 2:
         raise InvalidParameter("Names must have at least 2 letters")
-    return True
+    else:
+        return True
 
 
 def validate_email(string):
