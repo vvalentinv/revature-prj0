@@ -23,17 +23,17 @@ Leveraging Python, create a RESTful API application that supports two main resou
 ### Endpoint Requirements
 The following endpoints and their respective verbs should support the operations as described. In the HTTP response, use appropriate status codes (as specific as possible) and response bodies where applicable.
 
-- ~~`POST /customers`: Creates a new customer~~
-- ~~`GET /customers`: Gets all customers~~
-- ~~`GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)~~
-- ~~`PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)~~
-- ~~`DELETE /customer/{customer_id}`: Delete customer with an id of X (if the customer exists)~~
-- ~~`POST /customer/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer exists)~~
+- `POST /customers`: Creates a new customer~~
+- `GET /customers`: Gets all customers~~
+- `GET /customer/{customer_id}`: Get customer with an id of X (if the customer exists)~~
+- `PUT /customer/{customer_id}`: Update customer with an id of X (if the customer exists)~~
+- `DELETE /customer/{customer_id}`: Delete customer with an id of X (if the customer exists)~~
+- `POST /customer/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer exists)~~
 - These two should be the same endpoint (you will need logic for whether the query parameters exist):
-    - ~~`GET /customer/{customer_id}/accounts`: Get all accounts for customer with id of X (if customer exists)~~
-    - ~~`GET /customer/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts for customer id of X with balances between Y and Z (if customer exists)~~
-- ~~`GET /customer/{customer_id}/account/{account_id}`: Get account with id of Y belonging to customer with id of X (if customer and account exist AND if account belongs to customer)~~
-- ~~`PUT /customer/{customer_id}/account/{account_id}`: Update account with id of Y belonging to customer with id of X (if customer and account exist AND if account belongs to customer)~~
+    - `GET /customer/{customer_id}/accounts`: Get all accounts for customer with id of X (if customer exists)~~
+    - `GET /customer/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts for customer id of X with balances between Y and Z (if customer exists)~~
+- `GET /customer/{customer_id}/account/{account_id}`: Get account with id of Y belonging to customer with id of X (if customer and account exist AND if account belongs to customer)~~
+- `PUT /customer/{customer_id}/account/{account_id}`: Update account with id of Y belonging to customer with id of X (if customer and account exist AND if account belongs to customer)~~
 - `DELETE /customer/{customer_id}/account/{account_id}`: Delete account with id of Y belonging to customer with id of X (if customer and account exist AND if account belongs to customer)
 
 ### General Requirements

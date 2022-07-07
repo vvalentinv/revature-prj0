@@ -2,7 +2,6 @@ from model.customer import Customer
 from utility.db_connection import pool
 
 
-
 class CustomerDao:
     # CRUD operations
     # Create - insert a new customer into our "database"
@@ -52,13 +51,11 @@ class CustomerDao:
                 if not cust:
                     return None
 
-                customer_id, first_name, last_name, date_of_birth, \
-                customer_since, email, postal_code, unit_no, \
-                mobile_phone = cust # destructuring a tuple
+                customer_id, first_name, last_name, date_of_birth, customer_since, \
+                    email, postal_code, unit_no, mobile_phone = cust  # destructuring a tuple
 
-                return Customer(customer_id, first_name, last_name, date_of_birth, \
-                customer_since, email, postal_code, unit_no, \
-                mobile_phone)
+                return Customer(customer_id, first_name, last_name, date_of_birth,
+                                customer_since, email, postal_code, unit_no, mobile_phone)
 
     def add_customer(self, cust):
 
@@ -86,8 +83,8 @@ class CustomerDao:
                 customer_since, email, postal_code, unit_no, \
                 mobile_phone = inserted_record
                 return Customer(customer_id, first_name, last_name, date_of_birth, \
-                customer_since, email, postal_code, unit_no, \
-                mobile_phone)
+                                customer_since, email, postal_code, unit_no, \
+                                mobile_phone)
 
     def update_customer_by_id(self, cust):
         with pool.connection() as conn:
@@ -110,9 +107,3 @@ class CustomerDao:
                 cur.execute("DELETE FROM customers WHERE id = %s RETURNING *",
                             (customer_id,))
                 return cur.fetchone()
-
-
-
-
-
-

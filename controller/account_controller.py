@@ -16,8 +16,7 @@ def add_account_by_customer_id(customer_id):
     account = Account(None, acc['type_id'], acc['currency_id'], acc['balance'])
 
     try:
-        return account_service.add_account_by_customer_id(account,
-                                                          customer_id), 201  # Dictionary representation of the newly added user
+        return account_service.add_account_by_customer_id(account, customer_id), 201  # Dictionary representation of the newly added user
         # 201 created
     except InvalidParameter as e:
         return {
