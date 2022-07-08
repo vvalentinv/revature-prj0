@@ -45,7 +45,7 @@ class CustomerService:
             raise CustomerNotFound(f"The requested customer ID:"
                                    f" {customer_id} was not found")
 
-        owned_accounts = self.account_dao.get_accounts_by_customer_id(customer_id, None)
+        owned_accounts = self.account_dao.get_accounts_by_customer_id(customer_id)
         if owned_accounts:
 
             for acc in owned_accounts:
