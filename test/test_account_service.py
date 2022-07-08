@@ -102,7 +102,7 @@ def test_get_accounts_by_customer_id_valid_user_two_valid_params(mocker):
         }
         if cust_id == 1:
             return [Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])]
+                            returned_record["balance"])]
         else:
             return None
 
@@ -124,6 +124,7 @@ def test_get_accounts_by_customer_id_valid_user_two_valid_params(mocker):
         "balance": actual[0]['balance']
 
     }]
+
 
 def test_get_accounts_by_customer_id_valid_user_agt_valid_param(mocker):
     #  Arrange
@@ -181,26 +182,28 @@ def test_get_customer_account_by_customer_id_valid_user_valid_account(mocker):
     #  Arrange
 
     def mock_get_customer_account_by_account_id(self, cust_id, account_id):
+
+        if cust_id == 1 and account_id == 3:
+            return 3,1
+        else:
+            return None
+
+    def mock_get_customer_by_id(self, cust_id):
+
+        if cust_id != 1:
+            return None
+        return True
+
+    def mock_get_account_by_id(self, account_id):
         returned_record = {
             "account_id": 1,
             "balance": 100,
             "currency_id": 1,
             "type_id": 1
         }
-        if cust_id == 1 and account_id == 3:
+        if account_id == 2 or account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
                            returned_record["balance"])
-        else:
-            return None
-
-    def mock_get_customer_by_id(self, cust_id):
-        if cust_id != 1:
-            return None
-        return True
-
-    def mock_get_account_by_id(self, account_id):
-        if account_id == 2 or account_id == 3:
-            return True
         return None
 
     mocker.patch('dao.account_dao.AccountDao.get_account_by_id', mock_get_account_by_id)
@@ -334,7 +337,6 @@ def test_update_customer_account_by_account_id_valid_user_valid_account(mocker):
 
         return acc
 
-
     def mock_get_customer_by_id(self, cust_id):
         if cust_id != 1:
             return None
@@ -345,11 +347,12 @@ def test_update_customer_account_by_account_id_valid_user_valid_account(mocker):
             return None
         return True
 
-    def mock_get_customer_account_by_account_id(self, cust_id,account_id):
+    def mock_get_customer_account_by_account_id(self, cust_id, account_id):
 
         return True
 
-    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id', mock_get_customer_account_by_account_id)
+    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id',
+                 mock_get_customer_account_by_account_id)
     mocker.patch('dao.account_dao.AccountDao.get_account_by_id', mock_get_account_by_id)
     mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     mocker.patch('dao.account_dao.AccountDao.update_account_by_id',
@@ -372,25 +375,23 @@ def test_delete_customer_account_by_account_id_valid_user_valid_account_associat
     # Arrange
 
     def mock_delete_account_by_id(self, acc_id):
-
         return True
 
     def mock_get_customer_by_id(self, cust_id):
-
         return True
 
     def mock_get_account_by_id(self, cust_id):
-
         return True
 
-    def mock_get_customer_account_by_account_id(self, cust_id,account_id):
-
+    def mock_get_customer_account_by_account_id(self, cust_id, account_id):
         return True
+
     def mock_check_for_joined_accounts_by_id(self, account_id):
         return False
 
     mocker.patch('dao.account_dao.AccountDao.check_for_joined_accounts_by_id', mock_check_for_joined_accounts_by_id)
-    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id', mock_get_customer_account_by_account_id)
+    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id',
+                 mock_get_customer_account_by_account_id)
     mocker.patch('dao.account_dao.AccountDao.get_account_by_id', mock_get_account_by_id)
     mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     mocker.patch('dao.account_dao.AccountDao.delete_account_by_id',
@@ -437,6 +438,7 @@ def test_delete_customer_account_by_customer_id_invalid_user_valid_account(mocke
     with pytest.raises(CustomerNotFound):
         account_service.delete_customer_account_by_account_id(2, 3)
 
+
 def test_delete_customer_account_by_customer_id_valid_user_invalid_account(mocker):
     #  Arrange
 
@@ -470,7 +472,8 @@ def test_delete_customer_account_by_customer_id_valid_user_invalid_account(mocke
         return None
 
     mocker.patch('dao.account_dao.AccountDao.check_for_joined_accounts_by_id', mock_check_for_joined_accounts_by_id)
-    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id', mock_get_customer_account_by_account_id)
+    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id',
+                 mock_get_customer_account_by_account_id)
     mocker.patch('dao.account_dao.AccountDao.get_account_by_id', mock_get_account_by_id)
     mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     mocker.patch('dao.account_dao.AccountDao.delete_account_by_id',
@@ -480,7 +483,7 @@ def test_delete_customer_account_by_customer_id_valid_user_invalid_account(mocke
         account_service.delete_customer_account_by_account_id(1, 2)
 
 
-def test_delete_customer_account_by_customer_id_valid_user_invalid_account(mocker):
+def test_delete_customer_account_by_customer_id_valid_user_valid_account_assoc_false(mocker):
     #  Arrange
 
     def mock_delete_account_by_id(self, account_id):
@@ -523,33 +526,28 @@ def test_delete_customer_account_by_customer_id_valid_user_invalid_account(mocke
     #
     #
 
-
     actual = account_service.delete_customer_account_by_account_id(1, 2)
     # Assert
     assert actual == {"message": f"Customer account with ID: 2 is not associated with any customers"}
-
 
 
 def test_delete_customer_account_by_account_id_valid_user_valid_account_association_true(mocker):
     # Arrange
 
     def mock_delete_account_by_id(self, acc_id):
-
         return True
 
     def mock_get_customer_by_id(self, cust_id):
-
         return True
 
     def mock_get_account_by_id(self, cust_id):
-
         return True
 
-    def mock_get_customer_account_by_account_id(self, cust_id,account_id):
-
+    def mock_get_customer_account_by_account_id(self, cust_id, account_id):
         return True
-    def mock_delete_joined_association(self, account_id,cust_id):
-        return 1,3
+
+    def mock_delete_joined_association(self, account_id, cust_id):
+        return 1, 3
 
     def mock_check_for_joined_accounts_by_id(self, account_id):
         return True
@@ -557,7 +555,8 @@ def test_delete_customer_account_by_account_id_valid_user_valid_account_associat
     mocker.patch('dao.account_dao.AccountDao.delete_joined_association', mock_delete_joined_association)
 
     mocker.patch('dao.account_dao.AccountDao.check_for_joined_accounts_by_id', mock_check_for_joined_accounts_by_id)
-    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id', mock_get_customer_account_by_account_id)
+    mocker.patch('dao.account_dao.AccountDao.get_customer_account_by_account_id',
+                 mock_get_customer_account_by_account_id)
     mocker.patch('dao.account_dao.AccountDao.get_account_by_id', mock_get_account_by_id)
     mocker.patch('dao.customer_dao.CustomerDao.get_customer_by_id', mock_get_customer_by_id)
     mocker.patch('dao.account_dao.AccountDao.delete_account_by_id',
@@ -568,5 +567,5 @@ def test_delete_customer_account_by_account_id_valid_user_valid_account_associat
 
     # Assert
     assert actual == {"message": f"Customer account with ID: 1 cannot be deleted because customer "
-                                   f"with ID: 3 is not the only account owner, however this "
-                                   f"customer is no longer associated with this account"}
+                                 f"with ID: 3 is not the only account owner, however this "
+                                 f"customer is no longer associated with this account"}

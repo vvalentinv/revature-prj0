@@ -61,7 +61,8 @@ class AccountService:
         if not self.account_dao.get_customer_account_by_account_id(customer_id, account_id):
             raise UnauthorizedAccess(f"The requested account ID:"
                                      f"{account_id} is not associated with the provided customer ID:{customer_id}")
-        return self.account_dao.get_customer_account_by_account_id(customer_id, account_id).to_dict()
+        assoc = self.account_dao.get_customer_account_by_account_id(customer_id, account_id)
+        return self.account_dao.get_account_by_id(assoc[0]).to_dict()
 
     def update_customer_account_by_account_id(self, customer_id, account):
         updated_account = self.account_dao.update_account_by_id(account)

@@ -111,7 +111,7 @@ def test_delete_customer_by_id_1(mocker):
     def mock_get_customer_by_id(self, cust_id):
         return 1, 'John', 'Doe', '1908-01-01', '2000-01-01', 'a@a.ca', 'M2J 1M5', '555', '555-555-500'
 
-    def mock_get_accounts_by_customer_id(self, cust_id, args):
+    def mock_get_accounts_by_customer_id(self, cust_id):
         return None
 
     mocker.patch('dao.customer_dao.CustomerDao.delete_customer_by_id', mock_delete_customer_by_id)
