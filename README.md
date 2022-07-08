@@ -59,3 +59,15 @@ Here are some ideas:
 - Deploy the application to an AWS EC2 instance
 - Use at least 1 stored procedure w/ Postgres
 - Additional resources and RESTful endpoints (in addition to the customers and accounts resources in the main requirements)
+
+
+## Install and run
+
+1. Clone the repository or download the zip archive
+2. Create a PostgreSQL database(check the utility package for the SQL) and fill in the .env.example file with that db info and rename the file to .env
+3. Open a Git Bash session in the project's location and build the virtual environment using "python -m venv ./venv"
+4. Run "pip install -r requirements.txt" to install all project dependencies
+5. To start it either open in your IDE of choice that supports it or "python app.py"
+6. To run the tests use "coverage run --source=service --module pytest --verbose test && coverage report --show-missing
+" in Git Bash session in project directory
+7. Optionally the Postman collection for this api can be imported from the utility package
