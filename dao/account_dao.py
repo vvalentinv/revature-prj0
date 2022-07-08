@@ -143,7 +143,6 @@ class AccountDao:
                 cur.execute("SELECT COUNT(*) FROM customers_with_accounts WHERE account_id = %s",
                             (account_id,))
                 assoc_num = cur.fetchone()
-                print(assoc_num)
                 if not assoc_num[0]:
                     return None
                 elif assoc_num[0] >= 2:

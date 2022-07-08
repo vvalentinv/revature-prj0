@@ -23,14 +23,13 @@ class AccountService:
         if not self.customer_dao.get_customer_by_id(customer_id):
             raise CustomerNotFound(f"The requested customer ID:"
                                    f" {customer_id} was not found")
-        print(args)
         filtered_accounts_list = []
         if validate_args(args):
             args_length = len(args)
-            print(args_length)
+
             if args_length == 2:
                 amount_greater_than = args['amountGreaterThan']
-                print(amount_greater_than)
+
                 amount_less_than = args['amountLessThan']
                 filtered_accounts_list = self.account_dao.get_accounts_by_customer_id_agt_alt(customer_id,
                                                                                               amount_greater_than,
@@ -46,7 +45,7 @@ class AccountService:
                                                                                               amount_less_than)
         else:
             filtered_accounts_list = self.account_dao.get_accounts_by_customer_id(customer_id)
-        print(filtered_accounts_list)
+
         result = []
         for acc in filtered_accounts_list:
             result.append(acc.to_dict())
@@ -62,8 +61,7 @@ class AccountService:
         if not self.account_dao.get_customer_account_by_account_id(customer_id, account_id):
             raise UnauthorizedAccess(f"The requested account ID:"
                                      f"{account_id} is not associated with the provided customer ID:{customer_id}")
-        else:
-            return account.to_dict()
+        return self.account_dao.get_customer_account_by_account_id(customer_id, account_id).to_dict()
 
     def update_customer_account_by_account_id(self, customer_id, account):
         updated_account = self.account_dao.update_account_by_id(account)
