@@ -44,11 +44,11 @@ class AccountDao:
                             "WHERE awc.customer_id =%s AND a.balance > %s AND a.balance < %s", (customer_id,
                                                                                                 amountGreaterThan,
                                                                                                 amountLessThan))
-                print(amountGreaterThan)
+
                 accounts = []
                 # iterate over each row of the results
                 for account in cur:
-                    print(account)
+
                     account_id = account[0]
                     type_id = account[1]
                     currency_id = account[2]
