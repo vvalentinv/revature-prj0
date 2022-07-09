@@ -19,28 +19,24 @@ class AccountService:
 
     def get_accounts_by_customer_id(self, customer_id, args):
         if not self.customer_dao.get_customer_by_id(customer_id):
-            raise CustomerNotFound(f"The requested customer ID:"
-                                   f" {customer_id} was not found")
+            raise CustomerNotFound(f"The requested customer ID: {customer_id} was not found")
         filtered_accounts_list = []
         if validate_args(args):
-            args_length = len(args)
-
-            if args_length == 2:
-                amount_greater_than = args['amountGreaterThan']
-
-                amount_less_than = args['amountLessThan']
+            if 'amountGreaterThan' in args.keys() and 'amountLessThan' in args.keys():
+                amount_greater_than = args.get('amountGreaterThan')
+                amount_less_than = args.get('amountLessThan')
                 filtered_accounts_list = self.account_dao.get_accounts_by_customer_id_agt_alt(customer_id,
                                                                                               amount_greater_than,
                                                                                               amount_less_than)
-            elif args_length == 1:
-                if 'amountGreaterThan' in args.keys():
-                    amount_greater_than = args['amountGreaterThan']
-                    filtered_accounts_list = self.account_dao.get_accounts_by_customer_id_agt(customer_id,
-                                                                                              amount_greater_than)
-                else:
-                    amount_less_than = args['amountLessThan']
-                    filtered_accounts_list = self.account_dao.get_accounts_by_customer_id_alt(customer_id,
-                                                                                              amount_less_than)
+
+            elif 'amountGreaterThan' in args.keys() and 'amountLessThan' not in args.keys():
+                amount_greater_than = args.get('amountGreaterThan')
+                filtered_accounts_list = self.account_dao.get_accounts_by_customer_id_agt(customer_id,
+                                                                                          amount_greater_than)
+            elif 'amountGreaterThan' not in args.keys() and 'amountLessThan' in args.keys():
+                amount_less_than = args.get('amountLessThan')
+                filtered_accounts_list = self.account_dao.get_accounts_by_customer_id_alt(customer_id,
+                                                                                          amount_less_than)
         else:
             filtered_accounts_list = self.account_dao.get_accounts_by_customer_id(customer_id)
 
@@ -71,7 +67,7 @@ class AccountService:
             raise UnauthorizedAccess(f"The requested account ID:"
                                      f"{account.get_account_id()} is not associated with the provided customer "
                                      f"ID:{customer_id}")
-        if validate_balance(account.get_balance()):
+        if validate_balance(account.get_balance_in_cents()):
             return self.account_dao.update_account_by_id(account).to_dict()
 
     def delete_customer_account_by_account_id(self, customer_id, account_id):

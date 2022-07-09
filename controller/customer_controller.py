@@ -10,24 +10,24 @@ customer_service = CustomerService()
 
 @cc.route('/')
 def index():
-    endpoints_description = "<p>How to use this API</p>" \
-                            "<p>'POST '/customers`: Creates a new customer</p>" \
-                            "<p>`GET /customers`: Gets all customers</p>" \
-                            "<p>`GET /customers/{customer_id}`: Get customer with an id of X (if the customer exists)</p>" \
-                            "<p>`PUT /customers/{customer_id}`: Update customer with an id of X (if the customer exists)</p>" \
-                            "<p>`DELETE /customers/{customer_id}`: Delete customer with an id of X (if the customer exists)</p>" \
-                            "<p>`POST /customers/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer " \
-                            "exists)</p>" \
-                            "<p>'GET /customers/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts" \
-                            " for customer having id of X with balances between Y and Z (if customer exists)</p>" \
-                            "<p>`GET /customers/{customer_id}/accounts/{account_id}`: Get account with id of Y belonging to the customer " \
-                            "having id of X (if customer and account exist AND if account belongs to customer)</p>" \
-                            "<p>`PUT /customers/{customer_id}/accounts/{account_id}`: Update account with id of Y belonging to customer" \
-                            " having id of X (if customer and account exist AND if account belongs to customer)</p>" \
-                            "<p>`DELETE /customers/{customer_id}/accounts/{account_id}`: Delete account with id of Y belonging to customer " \
-                            "having id of X (if customer and account exist AND if account belongs to customer)</p>"
+    desc = "<p>How to use this API</p>" \
+        "<p>'POST '/customers`: Creates a new customer</p>" \
+        "<p>`GET /customers`: Gets all customers</p>" \
+        "<p>`GET /customers/{customer_id}`: Get customer with an id of X (if the customer exists)</p>" \
+        "<p>`PUT /customers/{customer_id}`: Update customer with an id of X (if the customer exists)</p>" \
+        "<p>`DELETE /customers/{customer_id}`: Delete customer with an id of X (if the customer exists)</p>" \
+        "<p>`POST /customers/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer " \
+        "exists)</p>" \
+        "<p>'GET /customers/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts" \
+        " for customer having id of X with balances between Y and Z (if customer exists)</p>" \
+        "<p>`GET /customers/{customer_id}/accounts/{account_id}`: Get account with id of Y belonging to the customer " \
+        "having id of X (if customer and account exist AND if account belongs to customer)</p>" \
+        "<p>`PUT /customers/{customer_id}/accounts/{account_id}`: Update account with id of Y belonging to customer" \
+        " having id of X (if customer and account exist AND if account belongs to customer)</p>" \
+        "<p>`DELETE /customers/{customer_id}/accounts/{account_id}`: Delete account with id of Y belonging to the " \
+        "customer having id of X (if customer and account exist AND if account belongs to customer)</p>"
 
-    return endpoints_description
+    return desc
 
 
 @cc.route('/api/customers')
