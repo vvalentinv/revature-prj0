@@ -86,3 +86,9 @@ def validate_args(args):
                                    'or "amountGreaterThan" with positive values')
 
     return None
+
+
+def validate_balance(balance):
+    if balance < 0:
+        raise InvalidParameter("Update balance with positive values only")
+    return balance

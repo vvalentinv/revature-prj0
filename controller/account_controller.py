@@ -80,6 +80,10 @@ def update_customer_account_by_account_id(customer_id, account_id):
         return {
                    "message": str(e)
                }, 404
+    except InvalidParameter as e:
+        return {
+                   "message": str(e)
+               }, 400
 
 
 @ac.route('/api/customers/<customer_id>/accounts/<account_id>', methods=['DELETE'])

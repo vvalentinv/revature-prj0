@@ -21,19 +21,17 @@ class Account:
     def get_balance(self):
         return self.__balance
 
-    def set_account_id(self, value):
+    def set_type_id(self, value):
         self.__type_id = value
 
-    def set_type_id(self, value):
-        self.__customer_id = value
+    def set_account_id(self, value):
+        self.__account_id = value
 
     def set_currency_id(self, value):
         self.__currency_id = value
 
     def set_balance(self, value):
         self.__balance = value
-
-
 
     def to_dict(self):
         return {
