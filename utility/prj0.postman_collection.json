@@ -184,7 +184,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n            \"balance\": 500,\r\n            \"currency_id\": 2,\r\n            \"type_id\": 2\r\n}",
+					"raw": "{\r\n            \"balance_in_cents\": 200,\r\n            \"currency_id\": 2,\r\n            \"type_id\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -250,7 +250,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"currency_id\":1,\r\n    \"type_id\":1,\r\n    \"balance\":1000000\r\n}",
+					"raw": "{\r\n    \"currency_id\":1,\r\n    \"type_id\":1,\r\n    \"balance_in_cents\":1000000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -258,7 +258,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/customers/1/accounts/3",
+					"raw": "http://localhost:8080/api/customers/11/accounts/13",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -267,9 +267,9 @@
 					"path": [
 						"api",
 						"customers",
-						"1",
+						"11",
 						"accounts",
-						"3"
+						"13"
 					]
 				}
 			},
