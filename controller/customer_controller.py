@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, make_response
 from model.customer import Customer
 from service.customer_service import CustomerService
 from exception.customer_not_found import CustomerNotFound
@@ -10,31 +10,30 @@ customer_service = CustomerService()
 
 @cc.route('/')
 def index():
-    desc = "<p>How to use this API</p>" \
-        "<p>'POST '/customers`: Creates a new customer</p>" \
-        "<p>`GET /customers`: Gets all customers</p>" \
-        "<p>`GET /customers/{customer_id}`: Get customer with an id of X (if the customer exists)</p>" \
-        "<p>`PUT /customers/{customer_id}`: Update customer with an id of X (if the customer exists)</p>" \
-        "<p>`DELETE /customers/{customer_id}`: Delete customer with an id of X (if the customer exists)</p>" \
-        "<p>`POST /customers/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer " \
-        "exists)</p>" \
-        "<p>'GET /customers/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts" \
-        " for customer having id of X with uhjmuu888 between Y and Z (if customer exists)</p>" \
-        "<p>`GET /customers/{customer_id}/accounts/{account_id}`: Get account with id of Y belonging to the customer " \
-        "having id of X (if customer and account exist AND if account belongs to customer)</p>" \
-        "<p>`PUT /customers/{customer_id}/accounts/{account_id}`: Update account with id of Y belonging to customer" \
-        " having id of X (if customer and account exist AND if account belongs to customer)</p>" \
-        "<p>`DELETE /customers/{customer_id}/accounts/{account_id}`: Delete account with id of Y belonging to the " \
-        "customer having id of X (if customer and account exist AND if account belongs to customer)</p>"
+    desc = ["How to use this API:", "'POST '/customers`: Creates a new customer",
+            "`GET /customers`: Gets all customers</p>",
+            "`GET /customers/{customer_id}`: Get customer with an id of X (if the customer exists)",
+            "`PUT /customers/{customer_id}`: Update customer with an id of X (if the customer exists)",
+            "`DELETE /customers/{customer_id}`: Delete customer with an id of X (if the customer exists)",
+            "`POST /customers/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer"
+            "exists)",
+            "'GET /customers/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts"
+            " for customer having id of X with uhjmuu888 between Y and Z (if customer exists)",
+            "`GET /customers/{customer_id}/accounts/{account_id}`: Get account with id of Y belonging to the customer"
+            "having id of X (if customer and account exist AND if account belongs to customer)",
+            "`PUT /customers/{customer_id}/accounts/{account_id}`: Update account with id of Y belonging to cust"
+            " having id of X (if customer and account exist AND if account belongs to customer)",
+            "`DELETE /customers/{customer_id}/accounts/{account_id}`: Delete account with id of Y belonging to "
+            "customer having id of X (if customer and account exist AND if account belongs to customer)"]
 
-    return desc
+    return "\n\n".join(desc)
 
 
 @cc.route('/api/customers')
 def get_all_customers():
     return {
-        "customers": customer_service.get_all_customers()  # a list of dictionaries
-    }, 200
+               "customers": customer_service.get_all_customers()  # a list of dictionaries
+           }, 200
 
 
 @cc.route('/api/customers/<customer_id>')  # GET /api/customers/<customer_id>
@@ -47,7 +46,7 @@ def get_customer_by_id(customer_id):
                }, 404
 
 
-@cc.route('/api/customers', methods=['POST'])  
+@cc.route('/api/customers', methods=['POST'])
 def add_customer():
     cust = request.get_json()
     customer = Customer(None, cust['first_name'], cust['last_name'],

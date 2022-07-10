@@ -1,14 +1,9 @@
 import pytest
-
 from controller.account_controller import account_service
 from exception.customer_not_found import CustomerNotFound
 from exception.account_not_found import AccountNotFound
 from exception.unauthorized_access import UnauthorizedAccess
-from exception.invalid_parameter import InvalidParameter
-from controller.customer_controller import customer_service
-from model import account
 from model.account import Account
-from model.customer import Customer
 
 
 def test_add_account_by_customer_id_1(mocker):
@@ -184,7 +179,7 @@ def test_get_customer_account_by_customer_id_valid_user_valid_account(mocker):
     def mock_get_customer_account_by_account_id(self, cust_id, account_id):
 
         if cust_id == 1 and account_id == 3:
-            return 3,1
+            return 3, 1
         else:
             return None
 
