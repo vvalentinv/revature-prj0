@@ -13,10 +13,11 @@ account_service = AccountService()
 @ac.route('/api/customers/<customer_id>/accounts', methods=['POST'])
 def add_account_by_customer_id(customer_id):
     acc = request.get_json()
-    account = Account(None, acc['type_id'], acc['currency_id'], acc['balance'])
+    account = Account(None, acc['type_id'], acc['currency_id'], acc['balance_in_cents'])
 
     try:
-        return account_service.add_account_by_customer_id(account, customer_id), 201  # Dictionary representation of the newly added user
+        # Dictionary representation of the newly added user
+        return account_service.add_account_by_customer_id(account, customer_id), 201
         # 201 created
     except InvalidParameter as e:
         return {
@@ -65,9 +66,10 @@ def get_customer_account_by_account_id(customer_id, account_id):
 def update_customer_account_by_account_id(customer_id, account_id):
     acc = request.get_json()
     try:
-        return account_service.update_customer_account_by_account_id(customer_id, Account(account_id, acc['type_id'],
-                                                                                          acc['currency_id'],
-                                                                                          acc['balance'])), 200
+        return account_service.update_customer_account_by_account_id(customer_id,
+                                                                     Account(account_id, acc.get('type_id'),
+                                                                             acc.get('currency_id'),
+                                                                             acc.get('balance_in_cents'))), 200
     except UnauthorizedAccess as e:
         return {
                    "message": str(e)
@@ -80,6 +82,10 @@ def update_customer_account_by_account_id(customer_id, account_id):
         return {
                    "message": str(e)
                }, 404
+    except InvalidParameter as e:
+        return {
+                   "message": str(e)
+               }, 400
 
 
 @ac.route('/api/customers/<customer_id>/accounts/<account_id>', methods=['DELETE'])

@@ -52,7 +52,7 @@ class CustomerDao:
                     return None
 
                 customer_id, first_name, last_name, date_of_birth, customer_since, \
-                    email, postal_code, unit_no, mobile_phone = cust  # destructuring a tuple
+                email, postal_code, unit_no, mobile_phone = cust  # destructuring a tuple
 
                 return Customer(customer_id, first_name, last_name, date_of_birth,
                                 customer_since, email, postal_code, unit_no, mobile_phone)
@@ -79,11 +79,10 @@ class CustomerDao:
                 inserted_record = cur.fetchone()
                 if not inserted_record:
                     return None
-                customer_id, first_name, last_name, date_of_birth, \
-                customer_since, email, postal_code, unit_no, \
-                mobile_phone = inserted_record
-                return Customer(customer_id, first_name, last_name, date_of_birth, \
-                                customer_since, email, postal_code, unit_no, \
+                customer_id, first_name, last_name, date_of_birth, customer_since, email, postal_code, \
+                unit_no, mobile_phone = inserted_record
+                return Customer(customer_id, first_name, last_name, date_of_birth,
+                                customer_since, email, postal_code, unit_no,
                                 mobile_phone)
 
     def update_customer_by_id(self, cust):

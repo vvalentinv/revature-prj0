@@ -7,10 +7,10 @@ class AccountDao:
     def add_account_by_customer_id(self, account, customer_id):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute("INSERT INTO accounts (type_id, currency_id, balance)"
+                cur.execute("INSERT INTO accounts (type_id, currency_id, balance_in_cents)"
                             "VALUES(%s, %s, %s) RETURNING *", (account.get_type_id(),
                                                                account.get_currency_id(),
-                                                               account.get_balance()))
+                                                               account.get_balance_in_cents()))
                 added_acc = cur.fetchone()
                 cur.execute("INSERT INTO customers_with_accounts (account_id, customer_id)"
                             "VALUES (%s, %s) RETURNING *", (added_acc[0], customer_id))
@@ -30,71 +30,70 @@ class AccountDao:
                     account_id = account[0]
                     type_id = account[1]
                     currency_id = account[2]
-                    balance = account[3]
+                    balance_in_cents = account[3]
 
-                    accounts.append(Account(account_id, type_id, currency_id, balance))
+                    accounts.append(Account(account_id, type_id, currency_id, balance_in_cents))
 
                 return accounts
 
-    def get_accounts_by_customer_id_agt_alt(self, customer_id, amountGreaterThan, amountLessThan):
+    def get_accounts_by_customer_id_agt_alt(self, customer_id, agt, alt):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute("SELECT * FROM accounts as a "
-                            "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
-                            "WHERE awc.customer_id =%s AND a.balance > %s AND a.balance < %s", (customer_id,
-                                                                                                amountGreaterThan,
-                                                                                                amountLessThan))
-
+                cur.execute("SELECT * FROM accounts as a JOIN customers_with_accounts as awc ON a.id = awc.account_id "
+                            "WHERE awc.customer_id =%s AND a.balance_in_cents > %s AND a.balance_in_cents < %s", (customer_id,
+                                                                                                agt, alt))
                 accounts = []
                 # iterate over each row of the results
+                print(customer_id)
                 for account in cur:
 
                     account_id = account[0]
                     type_id = account[1]
                     currency_id = account[2]
-                    balance = account[3]
+                    balance_in_cents = account[3]
 
-                    accounts.append(Account(account_id, type_id, currency_id, balance))
+                    accounts.append(Account(account_id, type_id, currency_id, balance_in_cents))
 
                 return accounts
 
-    def get_accounts_by_customer_id_alt(self, customer_id, amountLessThan):
+    def get_accounts_by_customer_id_alt(self, customer_id, alt):
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute("SELECT * FROM accounts as a "
                             "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
                             "WHERE awc.customer_id = %s AND "
-                            "a.balance < %s", (customer_id, amountLessThan))
+                            "a.balance_in_cents < %s", (customer_id, alt))
 
                 accounts = []
-
+                print(customer_id)
                 # iterate over each row of the results
                 for account in cur:
                     account_id = account[0]
                     type_id = account[1]
                     currency_id = account[2]
-                    balance = account[3]
+                    balance_in_cents = account[3]
 
-                    accounts.append(Account(account_id, type_id, currency_id, balance))
+                    accounts.append(Account(account_id, type_id, currency_id, balance_in_cents))
 
                 return accounts
 
-    def get_accounts_by_customer_id_agt(self, customer_id, amountGreaterThan):
+    def get_accounts_by_customer_id_agt(self, customer_id, agt):
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute("SELECT * FROM accounts as a "
                             "JOIN customers_with_accounts as awc ON a.id = awc.account_id "
-                            "WHERE awc.customer_id = %s AND a.balance > %s", (customer_id, amountGreaterThan))
+                            "WHERE awc.customer_id = %s AND a.balance_in_cents > %s", (customer_id, agt))
 
                 accounts = []
+                print(customer_id)
                 # iterate over each row of the results
                 for account in cur:
                     account_id = account[0]
                     type_id = account[1]
                     currency_id = account[2]
-                    balance = account[3]
+                    balance_in_cents = account[3]
 
-                    accounts.append(Account(account_id, type_id, currency_id, balance))
+                    accounts.append(Account(account_id, type_id, currency_id, balance_in_cents))
 
                 return accounts
 
@@ -120,9 +119,9 @@ class AccountDao:
     def update_account_by_id(self, account):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute("UPDATE accounts SET type_id = %s, currency_id = %s, balance = %s WHERE id = %s RETURNING *"
-                            , (account.get_type_id(), account.get_currency_id(), account.get_balance(),
-                               account.get_account_id()))
+                cur.execute("UPDATE accounts SET type_id = %s, currency_id = %s, balance_in_cents = %s "
+                            "WHERE id = %s RETURNING *", (account.get_type_id(), account.get_currency_id(),
+                                                          account.get_balance_in_cents(), account.get_account_id()))
                 account = cur.fetchone()
                 if not account:
                     return None
@@ -153,8 +152,8 @@ class AccountDao:
     def delete_joined_association(self, account_id, customer_id):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute("DELETE FROM customers_with_accounts WHERE account_id = %s AND customer_id = %s RETURNING *"
-                            , (account_id, customer_id))
+                cur.execute("DELETE FROM customers_with_accounts "
+                            "WHERE account_id = %s AND customer_id = %s RETURNING *", (account_id, customer_id))
                 assoc = cur.fetchone()
                 if not assoc:
                     return None

@@ -19,7 +19,7 @@ CREATE TABLE accounts(
 	id SERIAL PRIMARY KEY,
 	type_id INT NOT NULL,
 	currency_id INT NOT NULL,
-	balance BIGINT NOT NULL CHECK(balance > 0),
+	balance_in_cents BIGINT NOT NULL CHECK(balance_in_cents > 0),
 	CONSTRAINT fk_account_type
   		FOREIGN KEY (type_id) REFERENCES "account_types" (id),
   	CONSTRAINT fk_currency
@@ -57,7 +57,7 @@ INSERT INTO account_types (type_name)
 	VALUES ('SAVINGS'),
 			('CHEQUING');	
 		
-INSERT INTO accounts (type_id, currency_id, balance)
+INSERT INTO accounts (type_id, currency_id, balance_in_cents)
 	VALUES 	(1,1,100),(2,1,500),(1,3,5000),
 			(2,1,100),(2,2,500),(2,3,5000),
 			(1,1,100),(2,2,500),(1,3,5000),
@@ -86,7 +86,7 @@ SELECT current_date - interval '16 year' <= '2008-01-01';
 
 
 SELECT a.id as acc_id, at2.type_name as account_type, cur.currency_name as currency,
-		a.balance, CONCAT_WS(', ', c.last_name,c.first_name) as name, c.id as cust_id
+		a.balance_in_cents, CONCAT_WS(', ', c.last_name,c.first_name) as name, c.id as cust_id
 	FROM accounts as a	JOIN account_types at2 ON a.type_id = at2.id
 	JOIN currencies cur ON a.currency_id = cur.id
 	JOIN customers_with_accounts awc ON a.id = awc.account_id

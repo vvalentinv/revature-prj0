@@ -57,32 +57,39 @@ def validate_phone(string):
 
 
 def validate_args(args):
-    args_length = 0
     if args:
-        args_length = len(args)
-    if args_length == 2:
-        if 'amountLessThan' in args.keys():
-            pass
-        else:
-            raise InvalidParameter('the expected parameter name is "amountLessThan" ')
-        if 'amountGreaterThan' in args.keys():
-            pass
-        else:
-            raise InvalidParameter('the expected parameter name is "amountGreaterThan" ')
-        if 0 <= float(args['amountGreaterThan']) <= float(args['amountLessThan']):
-            pass
-        else:
-            raise InvalidParameter('"amountGreaterThan" is expected to be equal or smaller than "amountLessThan" '
-                                   'and positive')
+        agt = args.get("amountGreaterThan")
+        alt = args.get("amountLessThan")
+        len_args = len(args)
+    else:
+        return None
+    if not agt and 'amountLessThan' in args.keys() and len_args == 2:
+        raise InvalidParameter('the expected parameter name is "amountGreaterThan" with positive Integer values')
+    elif not alt and 'amountGreaterThan' in args.keys() and len_args == 2:
+        raise InvalidParameter('the expected parameter name is "amountLessThan" with positive Integer values')
 
-        return args
-    if args_length == 1:
-        if args.to_dict().get('amountLessThan') and float(args.to_dict().get('amountLessThan')) > 0:
-            return args
-        elif args.to_dict().get('amountGreaterThan') and float(args.to_dict().get('amountGreaterThan')) > 0:
-            return args
-        else:
-            raise InvalidParameter('the expected parameter name is "amountLessThan" '
-                                   'or "amountGreaterThan" with positive values')
+    if agt:
+        try:
+            agt = int(agt)
+        except ValueError as e:
+            raise InvalidParameter('"amountGreaterThan" and "amountLessThan" '
+                                   'represent cents values(enter integer values)')
+    if alt:
+        try:
+            alt = int(alt)
+        except ValueError as e:
+            raise InvalidParameter('"amountGreaterThan" and "amountLessThan" '
+                                   'represent cents values(enter integer values)')
 
-    return None
+    if agt and alt and (agt < 0 or alt < 0):
+        raise InvalidParameter('"amountGreaterThan" and "amountLessThan" must be positive values')
+    elif agt and alt and agt > alt:
+        raise InvalidParameter('"amountGreaterThan" is expected to be equal or smaller than "amountLessThan" '
+                               'and positive')
+    return True
+
+
+def validate_balance(balance):
+    if balance < 0:
+        raise InvalidParameter("Update balance with positive values only")
+    return balance
