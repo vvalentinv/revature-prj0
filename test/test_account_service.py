@@ -35,7 +35,7 @@ def test_add_account_by_customer_id_1(mocker):
         "account_id": actual['account_id'],
         "type_id": actual['type_id'],
         "currency_id": actual['currency_id'],
-        "balance": actual['balance']
+        "balance_in_cents": actual['balance_in_cents']
 
     }
 
@@ -69,7 +69,7 @@ def test_get_accounts_by_customer_id_invalid_user(mocker):
     def mock_get_accounts_by_customer_id(self, cust_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
@@ -96,13 +96,13 @@ def test_get_accounts_by_customer_id_valid_user_two_valid_params(mocker):
     def mock_get_accounts_by_customer_id_agt_alt(self, cust_id, agt, alt):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if cust_id == 1:
             return [Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                            returned_record["balance"])]
+                            returned_record["balance_in_cents"])]
         else:
             return None
 
@@ -121,7 +121,7 @@ def test_get_accounts_by_customer_id_valid_user_two_valid_params(mocker):
         "account_id": actual[0]['account_id'],
         "type_id": actual[0]['type_id'],
         "currency_id": actual[0]['currency_id'],
-        "balance": actual[0]['balance']
+        "balance_in_cents": actual[0]['balance_in_cents']
 
     }]
 
@@ -132,7 +132,7 @@ def test_get_accounts_by_customer_id_valid_user_agt_valid_param(mocker):
     def mock_get_accounts_by_customer_id_agt(self, cust_id, agt):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
@@ -158,7 +158,7 @@ def test_get_accounts_by_customer_id_valid_user_alt_valid_param(mocker):
     def mock_get_accounts_by_customer_id_alt(self, cust_id, alt):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
@@ -197,13 +197,13 @@ def test_get_customer_account_by_customer_id_valid_user_valid_account(mocker):
     def mock_get_account_by_id(self, account_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if account_id == 2 or account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])
+                           returned_record["balance_in_cents"])
         return None
 
     mocker.patch('dao.account_dao.AccountDao.get_account_by_id', mock_get_account_by_id)
@@ -219,7 +219,7 @@ def test_get_customer_account_by_customer_id_valid_user_valid_account(mocker):
         "account_id": actual['account_id'],
         "type_id": actual['type_id'],
         "currency_id": actual['currency_id'],
-        "balance": actual['balance']
+        "balance_in_cents": actual['balance_in_cents']
 
     }
 
@@ -230,13 +230,13 @@ def test_get_customer_account_by_customer_id_invalid_user_valid_account(mocker):
     def mock_get_customer_account_by_account_id(self, cust_id, account_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if cust_id == 1 and account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])
+                           returned_record["balance_in_cents"])
         else:
             return None
 
@@ -266,13 +266,13 @@ def test_get_customer_account_by_customer_id_invalid_user_valid_account_2(mocker
     def mock_get_customer_account_by_account_id(self, cust_id, account_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if cust_id == 1 and account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])
+                           returned_record["balance_in_cents"])
         else:
             return None
 
@@ -302,13 +302,13 @@ def test_get_customer_account_by_customer_id_valid_user_invalid_account(mocker):
     def mock_get_customer_account_by_account_id(self, cust_id, account_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if cust_id == 1 and account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])
+                           returned_record["balance_in_cents"])
         else:
             return None
 
@@ -366,7 +366,7 @@ def test_update_customer_account_by_account_id_valid_user_valid_account(mocker):
         "account_id": actual['account_id'],
         "type_id": actual['type_id'],
         "currency_id": actual['currency_id'],
-        "balance": actual['balance']
+        "balance_in_cents": actual['balance_in_cents']
 
     }
 
@@ -410,13 +410,13 @@ def test_delete_customer_account_by_customer_id_invalid_user_valid_account(mocke
     def mock_delete_account_by_id(self, account_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])
+                           returned_record["balance_in_cents"])
         else:
             return None
 
@@ -445,13 +445,13 @@ def test_delete_customer_account_by_customer_id_valid_user_invalid_account(mocke
     def mock_delete_account_by_id(self, account_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])
+                           returned_record["balance_in_cents"])
         else:
             return None
 
@@ -489,13 +489,13 @@ def test_delete_customer_account_by_customer_id_valid_user_valid_account_assoc_f
     def mock_delete_account_by_id(self, account_id):
         returned_record = {
             "account_id": 1,
-            "balance": 100,
+            "balance_in_cents": 100,
             "currency_id": 1,
             "type_id": 1
         }
         if account_id == 3:
             return Account(returned_record["account_id"], returned_record["type_id"], returned_record["currency_id"],
-                           returned_record["balance"])
+                           returned_record["balance_in_cents"])
         else:
             return None
 

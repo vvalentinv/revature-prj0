@@ -19,7 +19,7 @@ def index():
         "<p>`POST /customers/{customer_id}/accounts`: Create a new account for a customer with id of X (if customer " \
         "exists)</p>" \
         "<p>'GET /customers/{customer_id}/accounts?amountLessThan=1000&amountGreaterThan=300`: Get all accounts" \
-        " for customer having id of X with balances between Y and Z (if customer exists)</p>" \
+        " for customer having id of X with uhjmuu888 between Y and Z (if customer exists)</p>" \
         "<p>`GET /customers/{customer_id}/accounts/{account_id}`: Get account with id of Y belonging to the customer " \
         "having id of X (if customer and account exist AND if account belongs to customer)</p>" \
         "<p>`PUT /customers/{customer_id}/accounts/{account_id}`: Update account with id of Y belonging to customer" \
